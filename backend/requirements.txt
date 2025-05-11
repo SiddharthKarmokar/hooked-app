@@ -1,0 +1,9 @@
+fastapi
+langchain
+langchain-core
+langchain-perplexity
+uvicorn
+pydantic
+python-box
+ensure
+python-dotenv
