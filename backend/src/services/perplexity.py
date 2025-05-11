@@ -11,6 +11,12 @@ load_dotenv()
 
 def strip_think_tags(text: str) -> str:
     """removes <think>...</think> part in the response from sonar reasoning models
+    
+    Args:
+        text(str): raw prompt from reasoning
+    
+    Returns:
+        str
     """
     return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
