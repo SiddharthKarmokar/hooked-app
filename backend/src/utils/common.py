@@ -46,19 +46,22 @@ def save_json(path: Path, data:dict):
     logger.info(f"json file saved at: {path}")
 
 @ensure_annotations
-def load_json(path: Path) -> ConfigBox:
+def load_json(path: Path, get_dict=False) -> ConfigBox | dict:
     """load json files data
 
     Args:
         path (Path): path to json file
     
     Returns:
-        ConfigBox: data as class attributes instead of dict
+        ConfigBox: data as class attributes instead of dict(default)
+        dict: if get_dict is set to True
     """
     with open(path) as f:
         content = json.load(f)
     
     logger.info(f"json file loaded successfully from: {path}")
+    if get_dict:
+        return content
     return ConfigBox(content)
 
 @ensure_annotations
