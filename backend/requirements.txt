@@ -10,4 +10,12 @@ python-dotenv
 motor
 passlib
 pytest
+pytest-asyncio
 pydantic-settings
+pydantic[email]
+python-jose
+bcrypt
+python-jose[cryptography]
+email-validator
+pyjwt
+sendgrid
