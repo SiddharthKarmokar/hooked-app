@@ -1,0 +1,16 @@
+{
+  "title": "SearchHookResponse",
+  "description": "Schema for response returned from LangChain when searching hooks",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "type": "string",
+      "description": "The topic of the hook"
+    },
+    "text": {
+      "type": "string",
+      "description": "The text content of the hook"
+    }
+  },
+  "required": ["topic", "text"]
+}
