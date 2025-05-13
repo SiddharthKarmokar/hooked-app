@@ -1,43 +1,43 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { colors, typography, spacing, borderRadius } from '../styles/theme';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type CategoryType = {
-  id: string;
+type InterestType = {
+  id: number;
   name: string;
   color: string;
 };
 
-const categories: CategoryType[] = [
-  { id: 'science', name: 'Science & Tech', color: colors.scienceTech },
-  { id: 'arts', name: 'Arts & Creativity', color: colors.artsCreativity },
-  { id: 'people', name: 'People & Society', color: colors.peopleSociety },
-  { id: 'numbers', name: 'Numbers & Logic', color: colors.numbersLogic },
-  { id: 'history', name: 'History & Culture', color: colors.historyCulture },
-  { id: 'earth', name: 'Earth & Environment', color: colors.earthEnvironment },
+const interests: InterestType[] = [
+  { id: 1, name: 'Science', color: colors.blue },
+  { id: 2, name: 'History', color: colors.orange },
+  { id: 3, name: 'Memes', color: colors.orange },
+  { id: 4, name: 'Technology', color: colors.blue },
+  { id: 5, name: 'Art', color: colors.blue },
+  { id: 6, name: 'Music', color: colors.orange },
+  { id: 7, name: 'Movies', color: colors.orange },
+  { id: 8, name: 'Books', color: colors.blue },
 ];
 
 const OnboardingScreen = () => {
-  const navigation = useNavigation();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const navigation = useNavigation<any>();
+  const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
 
-  const toggleCategory = (categoryId: string) => {
-    if (selectedCategories.includes(categoryId)) {
-      setSelectedCategories(selectedCategories.filter(id => id !== categoryId));
+  const toggleInterest = (id: number) => {
+    if (selectedInterests.includes(id)) {
+      setSelectedInterests(selectedInterests.filter(item => item !== id));
     } else {
-      if (selectedCategories.length < 3) {
-        setSelectedCategories([...selectedCategories, categoryId]);
-      }
+      setSelectedInterests([...selectedInterests, id]);
     }
   };
 
-  const handleGetStarted = async () => {
+  const handleContinue = async () => {
     try {
-      // Save selected categories for personalization
-      if (selectedCategories.length > 0) {
-        await AsyncStorage.setItem('@selected_categories', JSON.stringify(selectedCategories));
+      // Save selected interests for personalization
+      if (selectedInterests.length > 0) {
+        await AsyncStorage.setItem('@selected_interests', JSON.stringify(selectedInterests));
       }
       
       // Mark onboarding as completed
@@ -52,64 +52,33 @@ const OnboardingScreen = () => {
     }
   };
 
-  const handleSkip = async () => {
-    try {
-      // Mark onboarding as completed even when skipped
-      await AsyncStorage.setItem('@onboarding_completed', 'true');
-    } catch (error) {
-      console.error('Error marking onboarding as complete:', error);
-    }
-    navigation.navigate('MainTabs');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
-          <Text style={styles.title}>What makes you curious?</Text>
-          <Text style={styles.subtitle}>Pick up to 3 areas that blow your mind</Text>
-        </View>
+      <View style={styles.content}>
+        <Text style={styles.title}>Select your interests</Text>
+        <Text style={styles.subtitle}>Learning through real-world* hooks</Text>
         
-        <View style={styles.categoriesGrid}>
-          {categories.map(category => (
+        <View style={styles.interestsContainer}>
+          {interests.map(interest => (
             <TouchableOpacity
-              key={category.id}
+              key={interest.id}
               style={[
-                styles.categoryTile,
-                { backgroundColor: category.color + '20' }, // Adding transparency
-                selectedCategories.includes(category.id) && styles.selectedTile
+                styles.interestButton,
+                { backgroundColor: interest.color },
+                selectedInterests.includes(interest.id) && styles.selectedInterest
               ]}
-              onPress={() => toggleCategory(category.id)}
-              activeOpacity={0.8}
+              onPress={() => toggleInterest(interest.id)}
             >
-              <View 
-                style={[
-                  styles.checkmark, 
-                  selectedCategories.includes(category.id) && styles.checkmarkVisible
-                ]}
-              >
-                <Text style={styles.checkmarkText}>✓</Text>
-              </View>
-              <Text style={styles.categoryName}>{category.name}</Text>
+              <Text style={styles.interestText}>{interest.name}</Text>
             </TouchableOpacity>
           ))}
         </View>
-      </ScrollView>
-      
-      <View style={styles.footer}>
-        <TouchableOpacity 
-          style={[
-            styles.getStartedButton,
-            selectedCategories.length === 0 && styles.disabledButton
-          ]}
-          onPress={handleGetStarted}
-          disabled={selectedCategories.length === 0}
-        >
-          <Text style={styles.buttonText}>Get Started</Text>
-        </TouchableOpacity>
         
-        <TouchableOpacity onPress={handleSkip}>
-          <Text style={styles.skipText}>Skip for now</Text>
+        <TouchableOpacity
+          style={styles.continueButton}
+          onPress={handleContinue}
+        >
+          <Text style={styles.continueText}>Continue</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -119,105 +88,61 @@ const OnboardingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.cream,
   },
-  scrollContent: {
-    flexGrow: 1,
-    padding: spacing.lg,
-  },
-  header: {
-    alignItems: 'center',
-    marginTop: spacing.xl * 1.5,
-    marginBottom: spacing.xl,
+  content: {
+    flex: 1,
+    padding: spacing.l,
   },
   title: {
-    ...typography.headline,
-    fontSize: 28,
-    marginBottom: spacing.md,
-    textAlign: 'center',
+    fontSize: typography.sizes.extraLarge,
+    fontFamily: typography.fonts.bold,
+    fontWeight: typography.weights.bold,
+    color: colors.darkText,
+    marginBottom: spacing.xs,
   },
   subtitle: {
-    ...typography.body,
-    color: colors.textSecondary,
-    textAlign: 'center',
+    fontSize: typography.sizes.regular,
+    fontFamily: typography.fonts.regular,
+    color: colors.darkText,
+    marginBottom: spacing.l,
   },
-  categoriesGrid: {
+  interestsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: spacing.xl,
   },
-  categoryTile: {
+  interestButton: {
     width: '48%',
-    aspectRatio: 1.5,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.md,
-    padding: spacing.md,
+    borderRadius: borderRadius.buttonRadius,
+    paddingVertical: spacing.m,
+    alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: spacing.m,
+  },
+  selectedInterest: {
+    opacity: 0.8,
+  },
+  interestText: {
+    color: colors.whiteText,
+    fontFamily: typography.fonts.semiBold,
+    fontWeight: typography.weights.semiBold,
+    fontSize: typography.sizes.regular,
+  },
+  continueButton: {
+    backgroundColor: colors.blue,
+    borderRadius: borderRadius.buttonRadius,
+    paddingVertical: spacing.m,
     alignItems: 'center',
-    position: 'relative',
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
-  selectedTile: {
-    borderColor: colors.highlight,
-    shadowColor: colors.highlight,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  categoryName: {
-    ...typography.bodyMedium,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  checkmark: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: colors.highlight,
     justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0,
+    marginTop: 'auto',
   },
-  checkmarkVisible: {
-    opacity: 1,
-  },
-  checkmarkText: {
-    color: colors.textPrimary,
-    fontWeight: 'bold',
-  },
-  footer: {
-    padding: spacing.lg,
-    paddingBottom: spacing.xl,
-    alignItems: 'center',
-  },
-  getStartedButton: {
-    backgroundColor: colors.highlight,
-    borderRadius: borderRadius.full,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  disabledButton: {
-    backgroundColor: colors.textTertiary,
-    opacity: 0.5,
-  },
-  buttonText: {
-    ...typography.bodyMedium,
-    fontWeight: 'bold',
-    color: colors.textPrimary,
-  },
-  skipText: {
-    ...typography.caption,
-    color: colors.textSecondary,
-    marginTop: spacing.sm,
+  continueText: {
+    color: colors.whiteText,
+    fontFamily: typography.fonts.semiBold,
+    fontWeight: typography.weights.semiBold,
+    fontSize: typography.sizes.regular,
   },
 });
 

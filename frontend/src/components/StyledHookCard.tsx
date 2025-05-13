@@ -19,7 +19,7 @@ const HookCard = ({ id, title, content, analogy, category, categoryColor, tags, 
   const navigation = useNavigation();
 
   const handlePress = () => {
-    //@ts-ignore
+    // @ts-ignore
     navigation.navigate('HookDetail', { hookId: id });
   };
 
@@ -80,60 +80,58 @@ const HookCard = ({ id, title, content, analogy, category, categoryColor, tags, 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.cardRadius,
+    marginBottom: spacing.l,
+    overflow: 'hidden',
     ...shadows.medium,
   },
   imageContainer: {
     height: 160,
     width: '100%',
-    backgroundColor: colors.lightGray,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.md,
-    overflow: 'hidden',
+    position: 'relative',
   },
   categoryTag: {
     position: 'absolute',
-    top: spacing.sm,
-    left: spacing.sm,
-    paddingHorizontal: spacing.sm,
+    top: spacing.m,
+    left: spacing.m,
+    paddingHorizontal: spacing.s,
     paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
+    borderRadius: borderRadius.buttonRadius,
   },
   categoryText: {
     fontSize: typography.sizes.tiny,
-    fontWeight: typography.weights.bold,
+    fontWeight: 'bold',
     color: colors.white,
     fontFamily: typography.fonts.bold,
   },
   contentContainer: {
-    width: '100%',
+    padding: spacing.m,
   },
   title: {
     fontSize: typography.sizes.medium,
-    fontWeight: typography.weights.bold,
-    color: colors.darkText,
-    marginBottom: spacing.xs,
+    fontWeight: 'bold',
+    color: colors.navy,
+    marginBottom: spacing.s,
     fontFamily: typography.fonts.bold,
   },
   content: {
     fontSize: typography.sizes.small,
-    color: colors.textSecondary,
-    marginBottom: spacing.md,
+    color: colors.grayText,
+    marginBottom: spacing.m,
+    lineHeight: 20,
     fontFamily: typography.fonts.regular,
   },
   analogyContainer: {
     backgroundColor: colors.cream,
-    borderRadius: borderRadius.md,
-    padding: spacing.sm,
-    marginBottom: spacing.md,
+    borderRadius: borderRadius.searchRadius,
+    padding: spacing.s,
+    marginBottom: spacing.m,
   },
   analogyLabel: {
     fontSize: typography.sizes.tiny,
-    color: colors.accent,
-    fontWeight: typography.weights.bold,
+    color: colors.blue,
+    fontWeight: 'bold',
     marginBottom: spacing.xs,
     fontFamily: typography.fonts.bold,
   },
@@ -147,27 +145,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: spacing.sm,
+    marginTop: spacing.s,
   },
   tagsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   tag: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: borderRadius.full,
-    paddingHorizontal: spacing.sm,
+    backgroundColor: colors.lightGray,
+    borderRadius: borderRadius.searchRadius,
+    paddingHorizontal: spacing.s,
     paddingVertical: spacing.xs,
     marginRight: spacing.xs,
   },
   tagText: {
     fontSize: typography.sizes.tiny,
-    color: colors.textSecondary,
+    color: colors.grayText,
     fontFamily: typography.fonts.regular,
   },
   moreTagsText: {
     fontSize: typography.sizes.tiny,
-    color: colors.textTertiary,
+    color: colors.grayText,
     fontFamily: typography.fonts.regular,
   },
   actions: {
@@ -178,14 +176,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: spacing.sm,
+    marginLeft: spacing.s,
   },
   actionIcon: {
     fontSize: 18,
-    color: colors.textSecondary,
+    color: colors.grayText,
   },
 });
 

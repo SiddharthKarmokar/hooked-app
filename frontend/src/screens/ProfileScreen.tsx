@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { colors, typography, spacing } from '../styles/theme';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { colors, typography, spacing, borderRadius, shadows } from '../styles/theme';
 
 const ProfileScreen = () => {
   return (
@@ -52,10 +52,10 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.cream,
   },
   header: {
-    padding: spacing.lg,
+    padding: spacing.l,
     paddingTop: spacing.xl * 1.5,
     alignItems: 'center',
   },
@@ -63,68 +63,76 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: spacing.md,
+    marginBottom: spacing.m,
     padding: 3,
-    backgroundColor: colors.highlight,
+    backgroundColor: colors.blue,
   },
   profileImage: {
     width: '100%',
     height: '100%',
     borderRadius: 50,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: colors.lightGray,
   },
   username: {
-    ...typography.headline,
-    fontSize: 22,
+    fontSize: typography.sizes.large,
+    fontWeight: typography.weights.bold,
+    color: colors.navy,
     marginBottom: spacing.xs,
   },
   bio: {
-    ...typography.body,
+    fontSize: typography.sizes.regular,
     textAlign: 'center',
-    color: colors.textSecondary,
-    paddingHorizontal: spacing.lg,
+    color: colors.grayText,
+    paddingHorizontal: spacing.l,
   },
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: spacing.lg,
-    marginVertical: spacing.lg,
-    backgroundColor: colors.cardBackground,
-    borderRadius: 16,
-    padding: spacing.md,
+    marginHorizontal: spacing.l,
+    marginVertical: spacing.l,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.cardRadius,
+    padding: spacing.m,
+    ...shadows.small,
   },
   statItem: {
     flex: 1,
     alignItems: 'center',
   },
   statNumber: {
-    ...typography.headline,
-    fontSize: 20,
+    fontSize: typography.sizes.medium,
+    fontWeight: typography.weights.bold,
+    color: colors.navy,
   },
   statLabel: {
-    ...typography.caption,
+    fontSize: typography.sizes.small,
+    color: colors.grayText,
   },
   section: {
-    padding: spacing.lg,
+    padding: spacing.l,
   },
   sectionTitle: {
-    ...typography.subheadline,
-    marginBottom: spacing.md,
+    fontSize: typography.sizes.medium,
+    fontWeight: typography.weights.bold,
+    color: colors.navy,
+    marginBottom: spacing.m,
   },
   activityList: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: 16,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.cardRadius,
   },
   activityItem: {
-    padding: spacing.md,
+    padding: spacing.m,
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
+    borderBottomColor: colors.lightGray,
   },
   activityText: {
-    ...typography.body,
+    fontSize: typography.sizes.regular,
+    color: colors.navy,
   },
   activityTime: {
-    ...typography.caption,
+    fontSize: typography.sizes.tiny,
+    color: colors.grayText,
     marginTop: spacing.xs,
   },
 });
