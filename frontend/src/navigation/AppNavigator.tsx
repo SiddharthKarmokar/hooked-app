@@ -5,7 +5,9 @@ import { StyleSheet, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import screens
+import SplashScreen from '../screens/SplashScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
+import HomeScreen from '../screens/HomeScreen';
 import HookFeedScreen from '../screens/HookFeedScreen';
 import HookDetailScreen from '../screens/HookDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -15,12 +17,15 @@ import { colors, typography, spacing } from '../styles/theme';
 
 // Define navigation types
 export type RootStackParamList = {
+  Splash: undefined;
   Onboarding: undefined;
   MainTabs: undefined;
+  Home: undefined;
   HookDetail: { hookId: string };
 };
 
 export type MainTabParamList = {
+  Home: undefined;
   Feed: undefined;
   Profile: undefined;
 };
@@ -41,6 +46,18 @@ const MainTabNavigator = () => {
         tabBarLabelStyle: styles.tabBarLabel,
       }}
     >
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => (
+            <View style={[styles.tabIcon, { backgroundColor: color }]}>
+              <Text style={styles.tabIconText}>🏠</Text>
+            </View>
+          ),
+        }}
+      />
       <Tab.Screen 
         name="Feed" 
         component={HookFeedScreen} 
@@ -87,21 +104,20 @@ const AppNavigator = () => {
       }
     };
     
-    checkOnboardingStatus();
+    // Small delay to ensure we show splash screen for a bit
+    const timer = setTimeout(checkOnboardingStatus, 500);
+    return () => clearTimeout(timer);
   }, []);
-
-  if (isLoading) {
-    return null; // Or a splash screen component
-  }
 
   return (
     <Stack.Navigator
-      initialRouteName={hasCompletedOnboarding ? 'MainTabs' : 'Onboarding'}
+      initialRouteName="Splash"
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: colors.background },
       }}
     >
+      <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="MainTabs" component={MainTabNavigator} />
       <Stack.Screen 
@@ -112,7 +128,6 @@ const AppNavigator = () => {
           headerTitle: '',
           headerTintColor: colors.textPrimary,
           headerTransparent: true,
-          headerBackTitleVisible: false,
         }}
       />
     </Stack.Navigator>

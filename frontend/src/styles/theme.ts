@@ -1,123 +1,166 @@
-// Define color palette for the HookED app based on Gen Z/Alpha preferences
+// Define color palette for the HookED app based on exact specifications
+import { TextStyle } from 'react-native';
+type FontWeight = TextStyle['fontWeight'];
+
 export const colors = {
   // Primary Colors
-  primary: '#6600FF', // Electric Indigo
-  accent: '#FFD300', // Cyber Yellow
-  highlight: '#FF3399', // Neon Pink
-  success: '#24FF9B', // Mint Green
-  background: '#121212', // Space Black
-
-  // Secondary Colors
-  secondary: '#A98CFF', // Lavender
-  warmAccent: '#FFAA85', // Peach
-  coolAccent: '#35EEEE', // Turquoise
-  alert: '#FF5C64', // Coral
-
-  // Subject Categories
-  scienceTech: '#00CCFF', // Electric Blue
-  artsCreativity: '#FF3399', // Neon Pink
-  peopleSociety: '#CC99FF', // Light Purple
-  numbersLogic: '#24FF9B', // Mint Green
-  historyCulture: '#FFBF40', // Amber
-  earthEnvironment: '#00CC99', // Emerald
-
-  // Text Colors
-  textPrimary: '#FFFFFF',
-  textSecondary: '#CCCCCC',
-  textTertiary: '#999999',
+  navy: '#0E1E49',          // Dark navy for text and logo
+  orange: '#FF5D33',        // Bright orange for buttons and accent
+  blue: '#3165FF',          // Royal blue for buttons in alternating pattern
   
-  // UI Elements
-  cardBackground: '#1E1E1E',
-  inputBackground: '#2A2A2A',
-  divider: '#333333',
+  // Background colors
+  cream: '#F9F8F6',         // Warm off-white/cream background
+  white: '#FFFFFF',         // White for cards
+  lightGray: '#F5F5F5',     // Light gray for search bar
+  
+  // Text colors
+  darkText: '#0E1E49',      // Navy for primary text
+  grayText: '#84879B',      // Gray for secondary text
+  blueText: '#4B75E8',      // Blue for links/references
+  whiteText: '#FFFFFF',     // White text on buttons
+
+  // Category colors (kept for backward compatibility)
+  scienceTech: '#00CCFF',
+  artsCreativity: '#FF3399',
+  peopleSociety: '#CC99FF',
+  numbersLogic: '#24FF9B',
+  historyCulture: '#FFBF40',
+  earthEnvironment: '#00CC99',
+
+  // Legacy colors for backward compatibility
+  primary: '#3165FF',
+  accent: '#FF5D33',
+  highlight: '#FF5D33',
+  success: '#24FF9B',
+  background: '#FAFAFA',
+  textPrimary: '#0E1E49',
+  textSecondary: '#84879B',
+  textTertiary: '#84879B',
+  cardBackground: '#FFFFFF',
+  inputBackground: '#F5F5F5',
+  divider: '#F5F5F5',
 };
 
-// Typography styles with system font fallbacks
-// Note: We're using system fonts as placeholders for the specified custom fonts:
-// - "Space Grotesk" for headlines
-// - "Outfit" for body text
-// - "Silkscreen" for accent text
+// Typography definitions
 export const typography = {
+  // Font families - use system fonts for now
+  fonts: {
+    regular: 'System',
+    medium: 'System',
+    semiBold: 'System',
+    bold: 'System',
+  },
+  
+  // Font sizes
+  sizes: {
+    extraLarge: 32,
+    large: 24,
+    medium: 20,
+    regular: 16,
+    small: 14,
+    tiny: 12,
+  },
+  
+  // Font weights
+  weights: {
+    regular: '400' as FontWeight,
+    medium: '500' as FontWeight,
+    semiBold: '600' as FontWeight,
+    bold: '700' as FontWeight,
+  },
+  
+  // Legacy style objects for backward compatibility
   headline: {
     fontFamily: 'System',
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.textPrimary,
-    fontWeight: 'bold',
+    fontSize: 32,
+    lineHeight: 40,
+    color: colors.darkText,
+    fontWeight: '700',
   },
   subheadline: {
     fontFamily: 'System',
-    fontSize: 18,
-    lineHeight: 24,
-    color: colors.textPrimary,
+    fontSize: 24,
+    lineHeight: 32,
+    color: colors.darkText,
     fontWeight: '600',
   },
   body: {
     fontFamily: 'System',
     fontSize: 16,
     lineHeight: 22,
-    color: colors.textPrimary,
+    color: colors.darkText,
   },
   bodyMedium: {
     fontFamily: 'System',
     fontSize: 16,
     lineHeight: 22,
-    color: colors.textPrimary,
+    color: colors.darkText,
     fontWeight: '500',
   },
   caption: {
     fontFamily: 'System',
     fontSize: 14,
     lineHeight: 18,
-    color: colors.textSecondary,
+    color: colors.grayText,
   },
   accentText: {
     fontFamily: 'System',
     fontSize: 12,
     lineHeight: 16,
-    color: colors.highlight,
-    fontWeight: 'bold',
+    color: colors.orange,
+    fontWeight: '700',
   },
 };
 
-// Spacing for consistent layout
+// Spacing and layout measurements
 export const spacing = {
   xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
+  s: 8,
+  m: 16,
+  l: 24,
   xl: 32,
   xxl: 48,
-};
-
-// Border radius
-export const borderRadius = {
+  // Legacy keys for backward compatibility
   sm: 8,
   md: 16,
   lg: 24,
+};
+
+// Border radius definitions
+export const borderRadius = {
+  buttonRadius: 24,
+  cardRadius: 16,
+  searchRadius: 24,
+  // Legacy keys for backward compatibility
+  small: 8,
+  medium: 16,
+  large: 24,
   full: 9999,
+  sm: 8,
+  md: 16,
+  lg: 24,
 };
 
 // Shadow styles
 export const shadows = {
   small: {
-    shadowColor: '#000',
+    shadowColor: colors.navy,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 2,
   },
   medium: {
-    shadowColor: '#000',
+    shadowColor: colors.navy,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 4.65,
-    elevation: 4,
+    elevation: 3,
   },
   large: {
-    shadowColor: '#000',
+    shadowColor: colors.navy,
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.1,
     shadowRadius: 7.49,
     elevation: 8,
   },
