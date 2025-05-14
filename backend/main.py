@@ -3,7 +3,6 @@ from starlette.responses import RedirectResponse
 import uvicorn
 from src.routes.auth import router as auth_router
 from src.routes.verify_email import router as verify_router
-from src.routes.verify_email import router as verify_router
 
 app = FastAPI()
 @app.get("/", tags=["authentication"])
@@ -11,7 +10,6 @@ async def index():
     return RedirectResponse(url="/docs")
 
 app.include_router(auth_router, prefix="/api/auth")
-app.include_router(verify_router, prefix="/api/auth")
 app.include_router(verify_router, prefix="/api/auth")
 
 if __name__ == "__main__":

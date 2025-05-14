@@ -1,0 +1,22 @@
+{
+    "family": "hooked-api-cluster-task",
+    "networkMode": "awsvpc",
+    "containerDefinitions":[
+        {
+            "name": "hooked-api",
+            "image": "latest",
+            "memory": "1024",
+            "cpu": "256",
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "executionRoleArn": "arn:aws:secretsmanager:eu-north-1:727646512662:secret:hooked-admin-ecr-shAEl7"
+}
