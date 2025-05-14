@@ -1,4 +1,7 @@
 // Define color palette for the HookED app based on exact specifications
+import { TextStyle } from 'react-native';
+type FontWeight = TextStyle['fontWeight'];
+
 export const colors = {
   // Primary Colors
   navy: '#0E1E49',          // Dark navy for text and logo
@@ -60,10 +63,10 @@ export const typography = {
   
   // Font weights
   weights: {
-    regular: '400' as const,
-    medium: '500' as const,
-    semiBold: '600' as const,
-    bold: '700' as const,
+    regular: '400' as FontWeight,
+    medium: '500' as FontWeight,
+    semiBold: '600' as FontWeight,
+    bold: '700' as FontWeight,
   },
   
   // Legacy style objects for backward compatibility
