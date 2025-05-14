@@ -4,7 +4,7 @@ from typing import Optional, List
 class RegisterRequest(BaseModel):
     username: str = Field(..., min_length=3)
     email: EmailStr
-    phone: Optional[str] = None
+    phone: Optional[str] = Field(..., min_length=4, max_length=10)
     password: str = Field(..., min_length=6)
     location: Optional[str] = None
 
