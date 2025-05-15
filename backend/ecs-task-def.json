@@ -1,22 +1,22 @@
 {
-    "family": "hooked-api-cluster-task",
-    "networkMode": "awsvpc",
-    "containerDefinitions":[
+  "family": "hooked-api-cluster-task",
+  "networkMode": "awsvpc",
+  "memory": "1024",
+  "cpu": "256",
+  "requiresCompatibilities": ["FARGATE"],
+  "executionRoleArn": "arn:aws:iam::727646512662:role/hooked-ecs-role",
+  "containerDefinitions": [
+    {
+      "name": "hooked-api",
+      "image": "727646512662.dkr.ecr.<your-region>.amazonaws.com/hooked-api:latest",
+      "essential": true,
+      "portMappings": [
         {
-            "name": "hooked-api",
-            "image": "latest",
-            "memory": 1024,
-            "cpu": 256,
-            "essential": true,
-            "portMappings": [
-                {
-                    "containerPort": 8000,
-                    "hostPort": 8000,
-                    "protocol": "tcp"
-                }
-            ]
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
         }
-    ],
-    "requiresCompatibilities": ["FARGATE"],
-    "executionRoleArn": "arn:aws:iam::727646512662:role/hooked-ecs-role"
+      ]
+    }
+  ]
 }
