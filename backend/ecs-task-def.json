@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "hooked-api",
-      "image": "727646512662.dkr.ecr.<your-region>.amazonaws.com/hooked-api:latest",
+      "image": "727646512662.dkr.ecr.us-east-1.amazonaws.com/hooked-app:latest",
       "essential": true,
       "portMappings": [
         {
