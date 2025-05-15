@@ -37,7 +37,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest
-      
+  
+    - name: Set env vars from secrets
+      run: |
+        echo "MONGO_DB_URI=${{ secrets.MONGO_DB_URI }}" >> $GITHUB_ENV
+        echo "PPLX_API_KEY=${{ secrets.PPLX_API_KEY }}" >> $GITHUB_ENV
+        echo "JWT_HASH_KEY=${{ secrets.JWT_HASH_KEY }}" >> $GITHUB_ENV
+        echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> $GITHUB_ENV
+        echo "ENABLE_LOGGING=true" >> $GITHUB_ENV
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+        echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> $GITHUB_ENV
+        
     - name: Run Pytest
       working-directory: backend
       run: |
