@@ -18,5 +18,5 @@
         }
     ],
     "requiresCompatibilities": ["FARGATE"],
-    "executionRoleArn": "arn:aws:secretsmanager:eu-north-1:727646512662:secret:hooked-admin-ecr-shAEl7"
+    "executionRoleArn": "arn:aws:iam::727646512662:role/hooked-ecs-role"
 }
