@@ -65,6 +65,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v2
 
     - name: Build, tag, and push Docker image
+      working-directory: backend
       run: |
         IMAGE_TAG=latest
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
