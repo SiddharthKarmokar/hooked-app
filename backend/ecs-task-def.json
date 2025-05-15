@@ -29,6 +29,7 @@
       { "name": "MONGO_DB_URI", "value": "mongodb+srv://hooked-db-user-write:cS0g9q80dcDu4cwU@hooked-api-cluster0.rreuqrt.mongodb.net/" },
       { "name": "JWT_HASH_KEY", "value": "thisTheSecretKeyForJwtHashEncryption" },
       { "name": "SENDGRID_API_KEY", "value": "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" },
+      { "name": "PPLX_API_KEY", "value": "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" },
       { "name": "ENABLE_LOGGING", "value": "true" }
     ]
     }
