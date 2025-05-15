@@ -18,6 +18,7 @@ chat = ChatPerplexity(
     temperature=0, model="sonar-reasoning"
 )
 
+#on work
 if __name__ == "__main__":
     template = ChatPromptTemplate.from_messages([
         ('system', 'you are a helpful assistant'),
