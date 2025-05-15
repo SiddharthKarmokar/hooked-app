@@ -72,11 +72,13 @@ jobs:
         docker push $ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Fill in the new image ID in the task definition
+      working-directory: backend
       run: |
         IMAGE_URI="${ECR_REPOSITORY}:latest"
         sed "s|<IMAGE_URI>|$IMAGE_URI|g" ecs-task-def.json > new-task-def.json
 
     - name: Register new task definition
+      working-directory: backend
       id: register-task-def
       run: |
         TASK_DEF_ARN=$(aws ecs register-task-definition \
