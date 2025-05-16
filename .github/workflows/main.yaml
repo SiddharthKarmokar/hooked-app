@@ -45,8 +45,6 @@ jobs:
         echo "JWT_HASH_KEY=${{ secrets.JWT_HASH_KEY }}" >> $GITHUB_ENV
         echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> $GITHUB_ENV
         echo "ENABLE_LOGGING=true" >> $GITHUB_ENV
-        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-        echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> $GITHUB_ENV
 
     - name: Run Pytest
       working-directory: backend
@@ -77,6 +75,14 @@ jobs:
         IMAGE_URI="${ECR_REPOSITORY}:latest"
         sed "s|<IMAGE_URI>|$IMAGE_URI|g" ecs-task-def.json > new-task-def.json
 
+    - name: Fill in task definition with secrets
+      run: |
+        sed -i "s|MONGO_DB_URI_PLACEHOLDER|${{ secrets.MONGO_DB_URI }}|g" ecs-task-def.json
+        sed -i "s|JWT_HASH_KEY_PLACEHOLDER|${{ secrets.JWT_HASH_KEY }}|g" ecs-task-def.json
+        sed -i "s|SENDGRID_API_KEY_PLACEHOLDER|${{ secrets.SENDGRID_API_KEY }}|g" ecs-task-def.json
+        sed -i "s|PPLX_API_KEY_PLACEHOLDER|${{ secrets.PPLX_API_KEY }}|g" ecs-task-def.json
+      shell: bash
+    
     - name: Register new task definition
       working-directory: backend
       id: register-task-def
