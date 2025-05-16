@@ -74,8 +74,9 @@ jobs:
       run: |
         IMAGE_URI="${ECR_REPOSITORY}:latest"
         sed "s|<IMAGE_URI>|$IMAGE_URI|g" ecs-task-def.json > new-task-def.json
-
+      
     - name: Fill in task definition with secrets
+      working-directory: backend
       run: |
         sed -i "s|MONGO_DB_URI_PLACEHOLDER|${{ secrets.MONGO_DB_URI }}|g" ecs-task-def.json
         sed -i "s|JWT_HASH_KEY_PLACEHOLDER|${{ secrets.JWT_HASH_KEY }}|g" ecs-task-def.json
