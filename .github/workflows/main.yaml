@@ -78,22 +78,25 @@ jobs:
     - name: Fill in task definition with secrets
       working-directory: backend
       run: |
-        sed -i "s|MONGO_DB_URI_PLACEHOLDER|${{ secrets.MONGO_DB_URI }}|g" ecs-task-def.json
+        sed -i "s|MONGO_DB_URI_PLACEHOLDER|${{ secrets.MONGO_DB_URI }}|g" new-task-def.json
         echo "MONGO_DB_URI set:"
-        grep MONGO_DB_URI ecs-task-def.json
+        grep MONGO_DB_URI new-task-def.json
 
-        sed -i "s|JWT_HASH_KEY_PLACEHOLDER|${{ secrets.JWT_HASH_KEY }}|g" ecs-task-def.json
+        sed -i "s|JWT_HASH_KEY_PLACEHOLDER|${{ secrets.JWT_HASH_KEY }}|g" new-task-def.json
         echo "JWT_HASH_KEY set:"
-        grep JWT_HASH_KEY ecs-task-def.json
+        grep JWT_HASH_KEY new-task-def.json
 
-        sed -i "s|SENDGRID_API_KEY_PLACEHOLDER|${{ secrets.SENDGRID_API_KEY }}|g" ecs-task-def.json
+        sed -i "s|SENDGRID_API_KEY_PLACEHOLDER|${{ secrets.SENDGRID_API_KEY }}|g" new-task-def.json
         echo "SENDGRID_API_KEY set:"
-        grep SENDGRID_API_KEY ecs-task-def.json
+        grep SENDGRID_API_KEY new-task-def.json
 
-        sed -i "s|PPLX_API_KEY_PLACEHOLDER|${{ secrets.PPLX_API_KEY }}|g" ecs-task-def.json
+        sed -i "s|PPLX_API_KEY_PLACEHOLDER|${{ secrets.PPLX_API_KEY }}|g" new-task-def.json
         echo "PPLX_API_KEY set:"
-        grep PPLX_API_KEY ecs-task-def.json
+        grep PPLX_API_KEY new-task-def.json
       shell: bash
+
+        echo "Updated task definition:"
+        cat new-task-def.json
 
     - name: Register new task definition
       working-directory: backend
