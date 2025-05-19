@@ -1,0 +1,112 @@
+{
+  "title": "HookFeedResponse",
+  "description": "Detailed schema for a generated educational or informative feed item",
+  "type": "object",
+  "properties": {
+    "headline": {
+      "type": "string",
+      "description": "The main hook or title to catch the user's attention"
+    },
+    "hookText": {
+      "type": "string",
+      "description": "A short, intriguing description expanding on the headline"
+    },
+    "analogy": {
+      "type": "string",
+      "description": "A simple analogy to help users understand the concept"
+    },
+    "category": {
+      "type": "string",
+      "description": "The primary category or domain this content belongs to (e.g., Science, History, Art)"
+    },
+    "tags": {
+      "type": "array",
+      "description": "List of descriptive tags to help with discoverability",
+      "items": {
+        "type": "string"
+      }
+    },
+    "img_desc": {
+      "type": "string",
+      "description": "A detailed prompt to generate a relevant image for this feed item"
+    },
+    "expandedContent": {
+      "type": "object",
+      "description": "Expanded content with structured explanation and real-world connections",
+      "properties": {
+        "fullExplanation": {
+          "type": "string",
+          "description": "A detailed explanation of the concept"
+        },
+        "mindBlowingFact": {
+          "type": "string",
+          "description": "A surprising or impressive fact about the topic"
+        },
+        "realWorldConnection": {
+          "type": "string",
+          "description": "Explanation of how the concept connects to the real world"
+        }
+      },
+      "required": ["fullExplanation", "mindBlowingFact", "realWorldConnection"]
+    },
+    "relatedTopics": {
+      "type": "array",
+      "description": "Related or follow-up topics for further exploration",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceInfo": {
+      "type": "object",
+      "description": "Technical metadata about the topic and generation",
+      "properties": {
+        "sonarTopicId": {
+          "type": "string",
+          "description": "Unique identifier for the source or topic"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the feed item was generated"
+        }
+      },
+      "required": ["sonarTopicId", "generatedAt"]
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Metadata about usage and popularity",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when this content was created"
+        },
+        "popularity": {
+          "type": "integer",
+          "description": "Popularity score based on engagement"
+        },
+        "saveCount": {
+          "type": "integer",
+          "description": "Number of times this item was saved"
+        },
+        "shareCount": {
+          "type": "integer",
+          "description": "Number of times this item was shared"
+        }
+      },
+      "required": ["createdAt", "popularity", "saveCount", "shareCount"]
+    }
+  },
+  "required": [
+    "headline",
+    "hookText",
+    "analogy",
+    "category",
+    "tags",
+    "img_desc",
+    "expandedContent",
+    "relatedTopics",
+    "sourceInfo",
+    "metadata"
+  ]
+}
