@@ -77,6 +77,7 @@ jobs:
       
     - name: Fill in task definition with secrets
       working-directory: backend
+      shell: bash
       run: |
         sed -i "s|MONGO_DB_URI_PLACEHOLDER|${{ secrets.MONGO_DB_URI }}|g" new-task-def.json
         echo "MONGO_DB_URI set:"
@@ -93,10 +94,7 @@ jobs:
         sed -i "s|PPLX_API_KEY_PLACEHOLDER|${{ secrets.PPLX_API_KEY }}|g" new-task-def.json
         echo "PPLX_API_KEY set:"
         grep PPLX_API_KEY new-task-def.json
-      shell: bash
 
-        echo "Updated task definition:"
-        cat new-task-def.json
 
     - name: Register new task definition
       working-directory: backend
