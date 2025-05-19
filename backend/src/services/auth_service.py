@@ -13,6 +13,7 @@ async def register_user(data: RegisterRequest):
     try:
         existing_users = await users_collection.find_one({"$or": [{"username": data.username}, {"email": data.email}]})
         if existing_users:
+            logger.exception(f"User with id: {existing_users['_id']} already exists")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="User with this username or email already exists"
@@ -68,14 +69,14 @@ async def login_user(user: LoginRequest):
     try:
         db_user = await users_collection.find_one({"email": user.email})
         if not db_user:
-            raise HTTPException(status_code=401, detail="Invalid email or password")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
 
         if not db_user.get("is_verified", False):
-            raise HTTPException(status_code=403, detail="Email not verified")
+            raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail="Email not verified")
 
         security = Security()
         if not security.verify_password(user.password, db_user["password_hash"]):
-            raise HTTPException(status_code=401, detail="Incorrect password")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect password")
 
         token = security.create_access_token({"sub": str(db_user["_id"])})
 
@@ -98,4 +99,4 @@ async def login_user(user: LoginRequest):
         raise e
     except Exception as e:
         logger.exception("Error in login_user")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
