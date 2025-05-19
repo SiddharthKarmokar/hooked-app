@@ -10,7 +10,11 @@
     "text": {
       "type": "string",
       "description": "The text content of the hook"
-    }
+    },
+    "image_desc": {
+      "type":"string",
+      "description": "A detailed prompt to generate a relatable image of the hook"
+    } 
   },
   "required": ["topic", "text"]
 }
