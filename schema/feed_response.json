@@ -23,8 +23,12 @@
       "type": "array",
       "description": "List of descriptive tags to help with discoverability",
       "items": {
-        "type": "string"
-      }
+        "type": "string",
+        "enum": ["science", "memes", "art", "sports", "movies", "music", "technology", "history"]
+      },
+      "uniqueItems": true,
+      "minItems": 1,
+      "maxItems": 5
     },
     "img_desc": {
       "type": "string",

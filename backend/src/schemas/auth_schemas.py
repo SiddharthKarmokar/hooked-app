@@ -7,6 +7,7 @@ class RegisterRequest(BaseModel):
     phone: Optional[str] = Field(..., min_length=4, max_length=10)
     password: str = Field(..., min_length=6)
     location: Optional[str] = None
+    tags: Optional[List[str]]
 
 class RegisterResponse(BaseModel):
     message: str

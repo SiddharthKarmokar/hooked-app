@@ -33,7 +33,7 @@ async def register_user(data: RegisterRequest):
             "phone": data.phone,
             "password_hash": hashed,
             "location": data.location,
-            "tags": [],
+            "tags": data.tags,
             "xp": 0,
             "badges": [],
             "is_verified": False,

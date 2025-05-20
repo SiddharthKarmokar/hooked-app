@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, status
 from pathlib import Path
 from typing import List
+from bson import ObjectId
 from pymongo.errors import PyMongoError
-from src.database.mongo import hooks_collection
+from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
 from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES
-from src.schemas.pplx_schemas import FeedResponse
+from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
 from src import logger
@@ -13,9 +14,12 @@ import asyncio
 
 router = APIRouter()
 
-@router.get("/hook", response_model=FeedResponse)
-async def generate_hook(topics: List[str] = TOPICS) -> FeedResponse:
+@router.post("/hook", response_model=HookResponse)
+async def generate_hook(request: TopicRequest):
     try:
+        topics = request.topics
+        logger.info("Starting hook generation for topics: %s", topics)
+
         logger.info("Starting hook generation for topics: %s", topics)
 
         feed_validation_filepath: Path = SCHEMA_DIR / "feed_response.json"
@@ -59,7 +63,9 @@ async def generate_hook(topics: List[str] = TOPICS) -> FeedResponse:
                 )
 
         logger.info("Successfully generated and stored %d hooks", len(feed))
-        return FeedResponse(feed=feed)
+        return {
+            "status":"feed successfully generated"
+        }
 
     except Exception as e:
         logger.exception("Unhandled error in /hook route")
@@ -68,8 +74,46 @@ async def generate_hook(topics: List[str] = TOPICS) -> FeedResponse:
             detail="An unexpected error occurred while generating hooks"
         )
 
+@router.get("/{profile_id}", response_model=FeedResponse)
+async def generate_feed(profile_id:str):
+    try:
+        current_user = await users_collection.find_one({"_id":ObjectId(profile_id)})
+        if not current_user:
+            logger.exception(f"User with id: {profile_id} does not exist")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User with this username or email does not exist"
+            )
+        if not current_user.get("tags"):
+            user_prefs = {
+                "tags": TOPICS
+            }
+        else:
+            user_prefs = {
+                "tags": current_user.get("tags")
+            }
+    
+        hooks_cursor = hooks_collection.find({"tags": {"$in": user_prefs["tags"]}})
+        hooks = await hooks_cursor.to_list(length=None)
+
+        for hook in hooks:
+            hook["_id"] = str(hook["_id"])
+        
+        return FeedResponse(feed=hooks)
+
+    except Exception as e:
+        logger.exception("Error generating personalized feed")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to generate personalized feed"
+        )
+
+async def main():
+    await generate_hook()
+    await generate_feed("682b71693a9384931b9340cd")
+
 if __name__ == "__main__":
-    asyncio.run(generate_hook())
+    asyncio.run(main())
     
 
     
