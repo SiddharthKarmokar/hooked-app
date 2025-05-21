@@ -22,4 +22,4 @@ app.include_router(profile_router, prefix="/api/profile")
 app.include_router(feed_router, prefix="/api/feed")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#somethin
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#something
