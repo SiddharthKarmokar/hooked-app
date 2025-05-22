@@ -60,7 +60,7 @@ if __name__ == "__main__":
     #     ('human', '{input}\n{format_instructions}')
     # ])
 
-    BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent
     SCHEMA_DIR = BASE_DIR / "schema"
     test_schema_filepath = SCHEMA_DIR / "test.json"
     # test_schema = load_json(test_schema_filepath, get_dict=True)
