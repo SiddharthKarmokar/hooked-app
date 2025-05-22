@@ -1,0 +1,37 @@
+{
+  "family": "hooked-api-cluster-task",
+  "networkMode": "awsvpc",
+  "memory": "1024",
+  "cpu": "256",
+  "requiresCompatibilities": ["FARGATE"],
+  "executionRoleArn": "arn:aws:iam::727646512662:role/hooked-ecs-role",
+  "containerDefinitions": [
+    {
+      "name": "hooked-api",
+      "image": "727646512662.dkr.ecr.us-east-1.amazonaws.com/hooked-app:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/hooked-api",
+        "awslogs-region": "us-east-1",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "environment": [
+      { "name": "MONGO_DB_URI", "value": "MONGO_DB_URI_PLACEHOLDER" },
+      { "name": "JWT_HASH_KEY", "value": "JWT_HASH_KEY_PLACEHOLDER" },
+      { "name": "SENDGRID_API_KEY", "value": "SENDGRID_API_KEY_PLACEHOLDER" },
+      { "name": "PPLX_API_KEY", "value": "PPLX_API_KEY_PLACEHOLDER" },
+      { "name": "ENABLE_LOGGING", "value": "true" }
+    ]
+    }
+  ]
+}

@@ -1,4 +1,6 @@
+tests/test_auth.py
 __pycache__/
+.pytest_cache/
 /venv
 /logs
 .env

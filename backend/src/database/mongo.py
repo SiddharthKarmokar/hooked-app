@@ -5,4 +5,4 @@ from src.constants import DATABASE_NAME
 client = AsyncIOMotorClient(settings.MONGO_DB_URI)
 db = client[DATABASE_NAME]
 users_collection = db["users"]
- 
+hooks_collection = db["hooks"]

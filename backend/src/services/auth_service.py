@@ -13,6 +13,7 @@ async def register_user(data: RegisterRequest):
     try:
         existing_users = await users_collection.find_one({"$or": [{"username": data.username}, {"email": data.email}]})
         if existing_users:
+            logger.exception(f"User with id: {existing_users['_id']} already exists")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="User with this username or email already exists"
@@ -32,7 +33,7 @@ async def register_user(data: RegisterRequest):
             "phone": data.phone,
             "password_hash": hashed,
             "location": data.location,
-            "tags": [],
+            "tags": data.tags,
             "xp": 0,
             "badges": [],
             "is_verified": False,
@@ -65,31 +66,37 @@ async def register_user(data: RegisterRequest):
         )        
 
 async def login_user(user: LoginRequest):
-    db_user = await users_collection.find_one({"email": user.email})
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
+    try:
+        db_user = await users_collection.find_one({"email": user.email})
+        if not db_user:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
 
-    if not db_user.get("is_verified", False):
-        raise HTTPException(status_code=403, detail="Email not verified")
+        if not db_user.get("is_verified", False):
+            raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail="Email not verified")
 
-    security = Security()
-    if not security.verify_password(user.password, db_user["password_hash"]):
-        raise HTTPException(status_code=401, detail="Incorrect password")
+        security = Security()
+        if not security.verify_password(user.password, db_user["password_hash"]):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect password")
 
-    token = security.create_access_token({"sub": str(db_user["_id"])})
+        token = security.create_access_token({"sub": str(db_user["_id"])})
 
-    user_out = UserOut(
-        id=str(db_user["_id"]),
-        username=db_user["username"],
-        email=db_user["email"],
-        phone=db_user.get("phone"),
-        location=db_user.get("location"),
-        tags=db_user.get("tags", []),
-        xp=db_user.get("xp", 0),
-        badges=db_user.get("badges", [])
-    )
+        user_out = UserOut(
+            id=str(db_user["_id"]),
+            username=db_user["username"],
+            email=db_user["email"],
+            phone=db_user.get("phone"),
+            location=db_user.get("location"),
+            tags=db_user.get("tags", []),
+            xp=db_user.get("xp", 0),
+            badges=db_user.get("badges", [])
+        )
 
-    return TokenResponse(
-        user=user_out,
-        token=token
-    )
+        return TokenResponse(
+            user=user_out,
+            token=token
+        )
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logger.exception("Error in login_user")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
