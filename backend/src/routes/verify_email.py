@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Query
+from fastapi.responses import FileResponse
 from src.database.mongo import users_collection
 from src.utils.security import Security
+from src import logger
 
 router = APIRouter()
 
@@ -11,7 +13,9 @@ async def verify_email(token: str = Query(...)):
         payload = security.decode_token(token)
         email = payload.get("sub")
         if not email:
-            raise HTTPException(status_code=400, detail="Invalid token")
+            logger.exception("Invalid token")
+            # raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid token")
+            return FileResponse('static/verify_failed.html')
 
         result = await users_collection.update_one(
             {"email": email},
@@ -19,8 +23,10 @@ async def verify_email(token: str = Query(...)):
         )
 
         if result.modified_count == 0:
-            raise HTTPException(status_code=400, detail="Verification failed or already verified")
+            # raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Verification failed or already verified")
+            logger.exception("Verification failed or already verified")
+            return FileResponse('static/verify_failed.html')
 
-        return {"message": "Email successfully verified"}
+        return FileResponse("static/verify_success.html")
     except Exception:
-        raise HTTPException(status_code=400, detail="Invalid or expired token")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired token")

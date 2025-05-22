@@ -8,6 +8,7 @@ SCHEMA_DIR = BASE_DIR / "schema"
 DATABASE_NAME = "hooked_db"
 
 VERIFICATION_LINK = "http://hooked-cluster-alb-1100697768.us-east-1.elb.amazonaws.com/api/auth/verify-email"
+# 'http://localhost:8000/verify-email'
 NO_REPLY_MAIL = "eliomorningstar420@gmail.com"
 
 MODEL_NAME = "sonar-pro"

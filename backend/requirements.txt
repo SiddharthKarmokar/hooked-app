@@ -20,6 +20,7 @@ python-jose[cryptography]
 email-validator
 pyjwt
 sendgrid
+streamlit
 #pillow
 #google
 #google-generativeai
