@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from pathlib import Path
-from typing import List
+# from typing import List
+from dotenv import load_dotenv
 from bson import ObjectId
 from pymongo.errors import PyMongoError
 from src.database.mongo import hooks_collection, users_collection
@@ -9,8 +10,10 @@ from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES
 from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
+from src.services.gemini import GEMINI
 from src import logger
 import asyncio
+load_dotenv()
 
 router = APIRouter()
 
@@ -23,6 +26,7 @@ async def generate_hook(request: TopicRequest):
         feed_validation_schema = load_json(feed_validation_filepath)
 
         pplx = PPLX()
+        gemini = GEMINI()
         feed = []
 
         for topic in topics:
@@ -34,8 +38,16 @@ async def generate_hook(request: TopicRequest):
                 if "category" not in hook:
                     hook["category"] = topic.capitalize()
 
-                feed.append(hook)
+                image_prompt = hook.get('img_desc')
+                if image_prompt:
+                    try:
+                        image_base64 = gemini.get_image(input=image_prompt)
+                        hook["image_base64"] = image_base64
+                    except Exception as img_err:
+                        logger.error(f"Image generation failed for topic {topic}: {img_err}")
+                        hook["image_base64"] = None
 
+                feed.append(hook)
                 # Insert into MongoDB
                 insert_result = await hooks_collection.insert_one(hook)
                 logger.debug("Inserted hook with ID: %s", insert_result.inserted_id)
@@ -107,7 +119,7 @@ async def generate_feed(profile_id:str):
 
 async def main():
     await generate_hook()
-    await generate_feed("682b71693a9384931b9340cd")
+    # await generate_feed("682b71693a9384931b9340cd")
 
 if __name__ == "__main__":
     asyncio.run(main())

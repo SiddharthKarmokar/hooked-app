@@ -13,6 +13,8 @@ NO_REPLY_MAIL = "eliomorningstar420@gmail.com"
 MODEL_NAME = "sonar-pro"
 TEMPERATURE = 1
 
+IMAGE_MODEL_NAME = "models/gemini-2.0-flash-preview-image-generation"
+
 TOPICS = ["history", "art"]
 
 

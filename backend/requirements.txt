@@ -2,6 +2,7 @@ fastapi
 langchain
 langchain-core
 langchain-perplexity
+langchain-google-genai
 uvicorn
 pydantic
 python-box
@@ -19,3 +20,7 @@ python-jose[cryptography]
 email-validator
 pyjwt
 sendgrid
+#pillow
+#google
+#google-generativeai
+#IPython
