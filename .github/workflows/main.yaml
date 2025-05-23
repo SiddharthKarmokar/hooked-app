@@ -44,6 +44,7 @@ jobs:
         echo "PPLX_API_KEY=${{ secrets.PPLX_API_KEY }}" >> $GITHUB_ENV
         echo "JWT_HASH_KEY=${{ secrets.JWT_HASH_KEY }}" >> $GITHUB_ENV
         echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> $GITHUB_ENV
+        echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
         echo "ENABLE_LOGGING=true" >> $GITHUB_ENV
 
     - name: Run Pytest
