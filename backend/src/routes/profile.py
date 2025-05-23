@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from src.schemas.profile_schemas import Profile, ProfileUpdate
+from src.schemas.profile_schemas import Profile, ProfileUpdate, UpdateTagsRequest
 from src.utils.security import Security
 from src.database.mongo import users_collection
 from bson import ObjectId
@@ -61,3 +61,13 @@ async def delete_profile(profile_id: str):
     await users_collection.delete_one({"_id": ObjectId(profile_id)})
     
     return {"message": "Profile deleted successfully"}
+
+@router.put("/{profile_id}/tags")
+async def update_user_tags(profile_id: str, data: UpdateTagsRequest):
+    result = await users_collection.update_one(
+        {"_id": ObjectId(profile_id)},
+        {"$set": {"tags": data.tags}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User not found or tags unchanged")
+    return {"message": "Tags updated successfully"}

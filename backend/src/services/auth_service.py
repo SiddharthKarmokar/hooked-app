@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from bson import ObjectId
+# from bson import ObjectId
 from datetime import datetime, timezone, timedelta
 from jose import jwt
 from src import logger
@@ -33,7 +33,7 @@ async def register_user(data: RegisterRequest):
             "phone": data.phone,
             "password_hash": hashed,
             "location": data.location,
-            "tags": data.tags,
+            "tags": None,
             "xp": 0,
             "badges": [],
             "is_verified": False,
@@ -74,6 +74,8 @@ async def login_user(user: LoginRequest):
         if not db_user.get("is_verified", False):
             raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED, detail="Email not verified")
 
+        needs_tags = not db_user.get("tags")
+
         security = Security()
         if not security.verify_password(user.password, db_user["password_hash"]):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect password")
@@ -93,7 +95,8 @@ async def login_user(user: LoginRequest):
 
         return TokenResponse(
             user=user_out,
-            token=token
+            token=token,
+            needs_tags=needs_tags
         )
     except HTTPException as e:
         raise e
