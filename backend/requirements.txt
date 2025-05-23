@@ -21,7 +21,7 @@ email-validator
 pyjwt
 sendgrid
 streamlit
-#pillow
+pillow
 #google
 #google-generativeai
 #IPython
