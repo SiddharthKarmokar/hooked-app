@@ -95,6 +95,10 @@ jobs:
         echo "PPLX_API_KEY set:"
         grep PPLX_API_KEY new-task-def.json
 
+        sed -i "s|GOOGLE_API_KEY_PLACEHOLDER|${{ secrets.GOOGLE_API_KEY }}|g" new-task-def.json
+        echo "GOOGLE_API_KEY set:"
+        grep GOOGLE_API_KEY new-task-def.json
+
 
     - name: Register new task definition
       working-directory: backend

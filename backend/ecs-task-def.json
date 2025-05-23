@@ -30,6 +30,7 @@
       { "name": "JWT_HASH_KEY", "value": "JWT_HASH_KEY_PLACEHOLDER" },
       { "name": "SENDGRID_API_KEY", "value": "SENDGRID_API_KEY_PLACEHOLDER" },
       { "name": "PPLX_API_KEY", "value": "PPLX_API_KEY_PLACEHOLDER" },
+      { "name": "GOOGLE_API_KEY", "value": "GOOGLE_API_KEY_PLACEHOLDER" },
       { "name": "ENABLE_LOGGING", "value": "true" }
     ]
     }
