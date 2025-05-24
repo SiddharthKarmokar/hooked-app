@@ -53,6 +53,13 @@
       },
       "required": ["fullExplanation", "mindBlowingFact", "realWorldConnection"]
     },
+    "citations": {
+      "type": "array",
+      "description": "List of source references used in the content",
+      "items": {
+        "type": "string"
+      }
+    },
     "relatedTopics": {
       "type": "array",
       "description": "Related or follow-up topics for further exploration",
@@ -87,15 +94,18 @@
         },
         "popularity": {
           "type": "integer",
-          "description": "Popularity score based on engagement"
+          "description": "Popularity score based on engagement",
+          "default": 0
         },
         "saveCount": {
           "type": "integer",
-          "description": "Number of times this item was saved"
+          "description": "Number of times this item was saved",
+          "default": 0
         },
         "shareCount": {
           "type": "integer",
-          "description": "Number of times this item was shared"
+          "description": "Number of times this item was shared",
+          "default": 0
         }
       },
       "required": ["createdAt", "popularity", "saveCount", "shareCount"]
@@ -109,6 +119,7 @@
     "tags",
     "img_desc",
     "expandedContent",
+    "citations",
     "relatedTopics",
     "sourceInfo",
     "metadata"

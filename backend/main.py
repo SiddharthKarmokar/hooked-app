@@ -12,14 +12,14 @@ app = FastAPI()
 async def health_check():
     return {"status": "ok"}
 
-@app.get("/", tags=["authentication"])
+@app.get("/", tags=["default"])
 async def index():
     return RedirectResponse(url="/docs")
 
-app.include_router(auth_router, prefix="/api/auth")
-app.include_router(verify_router, prefix="/api/auth")
-app.include_router(profile_router, prefix="/api/profile")
-app.include_router(feed_router, prefix="/api/feed")
+app.include_router(auth_router, prefix="/api/auth", tags=["authentication"])
+app.include_router(verify_router, prefix="/api/auth", tags=["email verification"])
+app.include_router(profile_router, prefix="/api/profile", tags=["profile updates"])
+app.include_router(feed_router, prefix="/api/feed", tags=["feed"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#hmmmm
