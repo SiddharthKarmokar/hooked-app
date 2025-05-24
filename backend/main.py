@@ -5,6 +5,7 @@ from src.routes.auth import router as auth_router
 from src.routes.verify_email import router as verify_router
 from src.routes.profile import router as profile_router
 from src.routes.feed import router as feed_router
+from src.routes.interaction import router as log_router
 
 app = FastAPI()
 
@@ -20,6 +21,7 @@ app.include_router(auth_router, prefix="/api/auth", tags=["authentication"])
 app.include_router(verify_router, prefix="/api/auth", tags=["email verification"])
 app.include_router(profile_router, prefix="/api/profile", tags=["profile updates"])
 app.include_router(feed_router, prefix="/api/feed", tags=["feed"])
+app.include_router(log_router, prefix="/api/interacton", tags=["user interaction"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#hmmmm

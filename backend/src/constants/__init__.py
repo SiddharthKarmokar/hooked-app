@@ -1,5 +1,3 @@
-import os
-import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -17,6 +15,13 @@ TEMPERATURE = 1
 IMAGE_MODEL_NAME = "models/gemini-2.0-flash-preview-image-generation"
 
 TOPICS = ["history", "art"]
+
+INTERACTION_WEIGHTS = {
+    "clicks": 1.0,
+    "saves": 2.0,
+    "shares": 2.5,
+    "time_spent": 0.05,
+}
 
 
 SYSTEM_MESSAGES = {
