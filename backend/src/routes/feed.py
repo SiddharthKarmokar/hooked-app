@@ -12,6 +12,7 @@ from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
 from src.services.gemini import GEMINI
+from src.services.mpad import generate_mpad_feed
 from src import logger
 import asyncio
 load_dotenv()
@@ -221,6 +222,16 @@ async def search_hook(q: str = Query(..., description="Search query")):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error generating hooks from search query"
         )
+
+@router.get("/curated/{profile_id}", response_model=FeedResponse)
+async def generate_curated_feed(profile_id:str):
+    try:
+        feed = await generate_mpad_feed(user_id=profile_id)
+        return FeedResponse(feed=feed)
+    except Exception as e:
+        logger.error(f"Errors occured while generating curated feed\n{e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Feed generation failed")
+
 
 async def main():
     # await generate_hook()

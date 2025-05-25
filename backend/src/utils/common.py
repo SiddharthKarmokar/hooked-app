@@ -77,3 +77,8 @@ def create_directories(path_to_directories:list, verbose=True):
         if verbose:
             logger.info(f"created directioy at: {path}")
 
+def convert_objectid_to_str(doc):
+    doc = dict(doc)  # copy so you don't modify original
+    if "_id" in doc:
+        doc["_id"] = str(doc["_id"])
+    return doc

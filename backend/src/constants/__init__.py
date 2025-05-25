@@ -22,7 +22,16 @@ INTERACTION_WEIGHTS = {
     "shares": 2.5,
     "time_spent": 0.05,
 }
-
+DECAY_LAMBDA = 0.1
+WEIGHTS = {
+    "base_score": 0.5,
+    "recency": 0.2,
+    "popularity": 0.2,
+    "exploration_bonus": 0.1,
+}
+MMR_LAMBDA = 0.7#higer prioritize relevance, lower prioritize diversity
+N_VALUE = 2
+CANDIDATE_POOL_FACTOR = 3
 
 SYSTEM_MESSAGES = {
     "history":"""You are an AI feed item generator for a history-themed platform. Your job is to transform historical facts, events, user activity (like bookmarks, quiz progress), or curated articles into engaging feed messages. The tone should be informative, occasionally dramatic or surprising, and designed to spark curiosity or further exploration.
