@@ -7,7 +7,7 @@ from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
 from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
-from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES
+from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES, N_VALUE
 from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
@@ -223,10 +223,10 @@ async def search_hook(q: str = Query(..., description="Search query")):
             detail="Error generating hooks from search query"
         )
 
-@router.get("/curated/{profile_id}", response_model=FeedResponse)
-async def generate_curated_feed(profile_id:str):
+@router.post("/curated/{profile_id}", response_model=FeedResponse)
+async def generate_curated_feed(profile_id:str, N=N_VALUE):
     try:
-        feed = await generate_mpad_feed(user_id=profile_id)
+        feed = await generate_mpad_feed(user_id=profile_id, N=N_VALUE)
         return FeedResponse(feed=feed)
     except Exception as e:
         logger.error(f"Errors occured while generating curated feed\n{e}")
