@@ -9,6 +9,7 @@ from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
 from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES, N_VALUE
 from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
+from src.services.mpad import update_profile
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
 from src.services.gemini import GEMINI
@@ -226,6 +227,7 @@ async def search_hook(q: str = Query(..., description="Search query")):
 @router.post("/curated/{profile_id}", response_model=FeedResponse)
 async def generate_curated_feed(profile_id:str, N=N_VALUE):
     try:
+        await update_profile()
         feed = await generate_mpad_feed(user_id=profile_id, N=N_VALUE)
         return FeedResponse(feed=feed)
     except Exception as e:

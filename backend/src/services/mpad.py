@@ -46,9 +46,9 @@ def enrich_with_explicit_tags(interest_vector, explicit_tags, implicit_tags):
     return interest_vector
 
 
-async def update_profile(hook_collection, user_collection, log_collection, profile_collection):
+async def update_profile():
     # Fetch all hooks and map by ID
-    hooks_cursor = hook_collection.find()
+    hooks_cursor = hooks_collection.find()
     hooks = {str(h["_id"]): h async for h in hooks_cursor}
 
     # Fetch all logs (which contain interactions) and group by user_id
@@ -59,7 +59,7 @@ async def update_profile(hook_collection, user_collection, log_collection, profi
             user_logs[log["user_id"]].append(interaction)
 
     # Fetch all users and map by ID
-    users_cursor = user_collection.find()
+    users_cursor = users_collection.find()
     users = {str(u["_id"]): u async for u in users_cursor}
 
     updates = []
