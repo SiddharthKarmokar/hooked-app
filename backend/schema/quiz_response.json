@@ -1,0 +1,37 @@
+{
+  "title": "QuizResponse",
+  "description": "Schema for a quiz generated from a hook, containing multiple MCQs",
+  "type": "object",
+  "properties": {
+    "quiz": {
+      "type": "array",
+      "description": "List of multiple choice questions based on the hook",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The question to be asked"
+          },
+          "options": {
+            "type": "array",
+            "description": "List of 4 options for the question",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "answer": {
+            "type": "string",
+            "description": "The correct answer to the question"
+          }
+        },
+        "required": ["question", "options", "answer"]
+      },
+      "minItems": 1,
+      "maxItems": 1
+    }
+  },
+  "required": ["quiz"]
+}

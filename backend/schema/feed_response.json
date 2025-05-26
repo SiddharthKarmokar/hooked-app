@@ -9,7 +9,7 @@
     },
     "hookText": {
       "type": "string",
-      "description": "A short, intriguing description expanding on the headline"
+      "description": "A very short, intriguing description expanding on the headline"
     },
     "analogy": {
       "type": "string",
@@ -55,7 +55,7 @@
     },
     "citations": {
       "type": "array",
-      "description": "List of source references used in the content",
+      "description": "List of source references used in the content in url",
       "items": {
         "type": "string"
       }
@@ -73,7 +73,7 @@
       "properties": {
         "sonarTopicId": {
           "type": "string",
-          "description": "Unique identifier for the source or topic"
+          "description": "Unique identifier for the source or topic(one word decribing source or topic)"
         },
         "generatedAt": {
           "type": "string",
@@ -82,33 +82,6 @@
         }
       },
       "required": ["sonarTopicId", "generatedAt"]
-    },
-    "metadata": {
-      "type": "object",
-      "description": "Metadata about usage and popularity",
-      "properties": {
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when this content was created"
-        },
-        "popularity": {
-          "type": "integer",
-          "description": "Popularity score based on engagement",
-          "default": 0
-        },
-        "saveCount": {
-          "type": "integer",
-          "description": "Number of times this item was saved",
-          "default": 0
-        },
-        "shareCount": {
-          "type": "integer",
-          "description": "Number of times this item was shared",
-          "default": 0
-        }
-      },
-      "required": ["createdAt", "popularity", "saveCount", "shareCount"]
     }
   },
   "required": [

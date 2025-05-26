@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
-# from bson import ObjectId
+from bson import ObjectId
 from datetime import datetime, timezone, timedelta
 from jose import jwt
 from src import logger
+from src.config.game import LOGIN_XP
 from src.database.mongo import users_collection
 from src.config.common_setting import settings
 from src.utils.security import Security, ALGORITHM
@@ -79,6 +80,20 @@ async def login_user(user: LoginRequest):
         security = Security()
         if not security.verify_password(user.password, db_user["password_hash"]):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect password")
+
+        last_login = db_user.get("last_login", datetime(2000, 1, 1, tzinfo=timezone.utc))
+        now = datetime.now(timezone.utc)
+
+        if last_login.date() < now.date():
+            await users_collection.update_one(
+                {"_id": db_user["_id"]},
+                {
+                    "$inc": {"xp": LOGIN_XP},
+                    "$set": {"last_login": now}
+                }
+            )
+            db_user["xp"] += LOGIN_XP
+            db_user["last_login"] = now
 
         token = security.create_access_token({"sub": str(db_user["_id"])})
 

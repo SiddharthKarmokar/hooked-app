@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 from bson import ObjectId
 from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
+from src.constants import SEARCH_TEMPERATURE
+from src.config.game import SEARCH_XP
+from src.services.game import update_xp
+from src.services.game import generate_quiz
 from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
 from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES, N_VALUE
@@ -14,6 +18,7 @@ from src.constants import TOPICS
 from src.services.perplexity import PPLX
 from src.services.gemini import GEMINI
 from src.services.mpad import generate_mpad_feed
+from datetime import datetime, timezone
 from src import logger
 import asyncio
 load_dotenv()
@@ -41,6 +46,7 @@ async def generate_hook(request: TopicRequest):
                 if "category" not in hook:
                     hook["category"] = topic.capitalize()
 
+                # Generate image if description exists
                 image_prompt = hook.get('img_desc')
                 if image_prompt:
                     try:
@@ -50,12 +56,20 @@ async def generate_hook(request: TopicRequest):
                         logger.error(f"Image generation failed for topic {topic}: {img_err}")
                         hook["image_base64"] = None
 
+                hook["metadata"] = {
+                    "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
+                    "popularity": 0,
+                    "saveCount": 0,
+                    "shareCount": 0
+                }
+
                 feed.append(hook)
+
                 # Insert into MongoDB
                 insert_result = await hooks_collection.insert_one(hook)
                 logger.debug("Inserted hook with ID: %s", insert_result.inserted_id)
 
-            except KeyError as e:
+            except KeyError:
                 logger.error("System message not found for topic: %s", topic)
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -67,7 +81,7 @@ async def generate_hook(request: TopicRequest):
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Database insertion error"
                 )
-            except Exception as e:
+            except Exception:
                 logger.exception("Unexpected error while generating hook for topic: %s", topic)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -76,10 +90,10 @@ async def generate_hook(request: TopicRequest):
 
         logger.info("Successfully generated and stored %d hooks", len(feed))
         return {
-            "status":"feed successfully generated"
+            "status": "feed successfully generated"
         }
 
-    except Exception as e:
+    except Exception:
         logger.exception("Unhandled error in /hook route")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -169,60 +183,70 @@ async def get_trending_feed(profile_id: str):
             detail="An error occurred while fetching trending feed"
         )
 
-@router.get("/search", response_model=FeedResponse)
-async def search_hook(q: str = Query(..., description="Search query")):
+
+@router.get("/search/{profile_id}", response_model=FeedResponse)
+async def search_hook(profile_id:str, q: str = Query(..., description="Search query")):
     try:
-        logger.info("Generating 3 hooks for search query: %s", q)
+        logger.info("Generating a hook for search query: %s", q)
         validation_filepath: Path = SCHEMA_DIR / "feed_response.json"
         validation_schema = load_json(validation_filepath)
 
-        pplx = PPLX(temperature=2)
+        pplx = PPLX(temperature=SEARCH_TEMPERATURE)
         gemini = GEMINI()
 
         pplx.set_template(system_msg="You are a creative content writer who generates eye-catching, educational hooks based on user input.")
 
-        hooks = []
-        for i in range(3):
+        try:
+            hook = pplx.get_prompt(
+                schema=validation_schema,
+                input=f"Generate a creative and informative hook based on: '{q}'. Give variety from other results."
+            )
+
+            hook["category"] = hook.get("category", "Search")
+            hook["tags"] = [tag.strip().lower() for tag in hook.get("tags", [])] or ["misc"]
+            hook["popularity"] = 1
+            hook["saveCount"] = 0
+            hook["shareCount"] = 0
+
+            image_prompt = hook.get("img_desc")
+            if image_prompt:
+                try:
+                    hook["image_base64"] = gemini.get_image(input=image_prompt)
+                except Exception as img_err:
+                    logger.warning(f"Image generation failed: {img_err}")
+                    hook["image_base64"] = None
+
+            result = await hooks_collection.insert_one(hook)
+            hook["_id"] = str(result.inserted_id)
+
             try:
-                hook = pplx.get_prompt(
-                    schema=validation_schema,
-                    input=f"Generate a creative and informative hook based on: '{q}'. Give variety from other results."
-                )
+                quiz = generate_quiz(hook)
+                hook["quiz"] = quiz
+            except Exception as quiz_err:
+                logger.warning(f"Quiz generation failed: {quiz_err}")
+                hook["quiz"] = None
+            try:
+                await update_xp(user_id=profile_id, xp=SEARCH_XP)
+            except:
+                logger.error(f"User with {profile_id} had some trouble updating xp")
+        except Exception as sub_error:
+            logger.warning("One of the hooks failed: %s", sub_error)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Hook generation failed"
+            )
 
-                hook["category"] = hook.get("category", "Search")
-                hook["tags"] = [tag.strip().lower() for tag in hook.get("tags", [])] or ["misc"]
-                hook["popularity"] = 1
-                hook["saveCount"] = 0
-                hook["shareCount"] = 0
+        return FeedResponse(feed=[hook])
 
-                image_prompt = hook.get("img_desc")
-                if image_prompt:
-                    try:
-                        hook["image_base64"] = gemini.get_image(input=image_prompt)
-                    except Exception as img_err:
-                        logger.warning(f"Image generation failed: {img_err}")
-                        hook["image_base64"] = None
-
-                result = await hooks_collection.insert_one(hook)
-
-                hook["_id"] = str(result.inserted_id)
-                hooks.append(hook)
-
-            except Exception as sub_error:
-                logger.warning("One of the hooks failed: %s", sub_error)
-                continue
-            
-        if not hooks:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="All hook generations failed")
-
-        return FeedResponse(feed=hooks)
-
+    except HTTPException as e:
+        raise e
     except Exception as e:
         logger.exception("Failed to generate search-based hooks")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error generating hooks from search query"
         )
+
 
 @router.post("/curated/{profile_id}", response_model=FeedResponse)
 async def generate_curated_feed(profile_id:str, N=N_VALUE):
