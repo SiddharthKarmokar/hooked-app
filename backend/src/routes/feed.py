@@ -138,53 +138,25 @@ async def generate_feed(profile_id:str):
             detail="Failed to generate personalized feed"
         )
 
-@router.get("/trending/{profile_id}", response_model=FeedResponse)
-async def get_trending_feed(profile_id: str):
+@router.get("/trending", response_model=FeedResponse)
+async def get_trending_feed():
     try:
-        user = await users_collection.find_one({"_id": ObjectId(profile_id)})
-        if not user:
-            logger.error("User with ID %s not found", profile_id)
-            raise HTTPException(status_code=404, detail="User not found")
+        trending_cursor = hooks_collection.find(
+            {},
+            sort=[("metadata.popularity", DESCENDING)]
+        ).limit(12)
 
-        user_tags = user.get("tags", TOPICS)
-
-        tag_based_cursor = hooks_collection.find(
-            {"tags": {"$in": user_tags}},
-            sort=[
-                ("metadata.popularity", DESCENDING),
-                ("metadata.shareCount", DESCENDING),
-                ("metadata.saveCount", DESCENDING)
-            ]
-        ).limit(7)
-
-        tag_based_hooks = await tag_based_cursor.to_list(length=7)
-        tag_hook_ids = {hook["_id"] for hook in tag_based_hooks}
-
-        global_cursor = hooks_collection.find(
-            {
-                "_id": {"$nin": list(tag_hook_ids)},
-                "tags": {"$nin": user_tags}
-            },
-            sort=[
-                ("metadata.popularity", DESCENDING),
-                ("metadata.shareCount", DESCENDING),
-                ("metadata.saveCount", DESCENDING)
-            ]
-        ).limit(5)
-
-        global_hooks = await global_cursor.to_list(length=5)
-
-        trending_hooks = tag_based_hooks + global_hooks
+        trending_hooks = await trending_cursor.to_list(length=12)
         for hook in trending_hooks:
             hook["_id"] = str(hook["_id"])
 
         return FeedResponse(feed=trending_hooks)
 
     except Exception as e:
-        logger.exception("Failed to generate trending feed for user %s", profile_id)
+        logger.exception("Failed to fetch trending feed")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred while fetching trending feed"
+            status_code=500,
+            detail="Error while generating trending feed"
         )
 
 

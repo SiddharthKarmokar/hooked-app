@@ -185,7 +185,7 @@ async def get_candidate_hooks(user_interest_vector, N=100, lambda_param=0.7):
         max_views = 1
 
         async for hook in all_hooks_cursor:
-            views = hook.get("views", 0)
+            views = hook['metadata'].get('viewCount', 0)
             max_views = max(max_views, views)
             all_hooks.append(hook)
 

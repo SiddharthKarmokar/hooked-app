@@ -22,7 +22,7 @@ app.include_router(auth_router, prefix="/api/auth", tags=["authentication"])
 app.include_router(verify_router, prefix="/api/auth", tags=["email verification"])
 app.include_router(profile_router, prefix="/api/profile", tags=["profile updates"])
 app.include_router(feed_router, prefix="/api/feed", tags=["feed"])
-app.include_router(log_router, prefix="/api/interacton", tags=["user interaction"])
+app.include_router(log_router, prefix="/api/interaction", tags=["user interaction"])
 app.include_router(quest_router, prefix="/api/quest", tags=['gamification'])
 
 if __name__ == "__main__":
