@@ -34,7 +34,7 @@ def compute_interest_score(hook, interaction):
         if action in INTERACTION_WEIGHTS:
             score += INTERACTION_WEIGHTS[action]
 
-        score += duration * INTERACTION_WEIGHTS.get("time_spent", 0)
+        score += duration * INTERACTION_WEIGHTS.get("duration", 0)
 
         return score * decay
     except Exception as e:

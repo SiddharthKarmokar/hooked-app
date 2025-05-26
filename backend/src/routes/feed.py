@@ -21,6 +21,7 @@ from src.services.mpad import generate_mpad_feed
 from datetime import datetime, timezone
 from src import logger
 import asyncio
+import random
 load_dotenv()
 
 router = APIRouter()
@@ -59,8 +60,11 @@ async def generate_hook(request: TopicRequest):
                 hook["metadata"] = {
                     "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
                     "popularity": 0,
-                    "saveCount": 0,
-                    "shareCount": 0
+                    "saveCount": random.randint(1, 50),
+                    "shareCount": random.randint(1, 100),
+                    "likeCount": random.randint(5, 500),
+                    "viewCount": random.randint(5, 500),
+                    "viral": random.randint(0, 1)
                 }
 
                 feed.append(hook)
@@ -204,9 +208,16 @@ async def search_hook(profile_id:str, q: str = Query(..., description="Search qu
 
             hook["category"] = hook.get("category", "Search")
             hook["tags"] = [tag.strip().lower() for tag in hook.get("tags", [])] or ["misc"]
-            hook["popularity"] = 1
-            hook["saveCount"] = 0
-            hook["shareCount"] = 0
+
+            hook["metadata"] = {
+                "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
+                "popularity": 1,
+                "saveCount": random.randint(1, 50),
+                "shareCount": random.randint(1, 100),
+                "likeCount": random.randint(5, 500),
+                "viewCount": random.randint(5, 500),
+                "viral": random.randint(0, 1)
+            }
 
             image_prompt = hook.get("img_desc")
             if image_prompt:

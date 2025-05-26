@@ -18,9 +18,10 @@ TOPICS = ["history", "art"]
 
 INTERACTION_WEIGHTS = {
     "clicks": 1.0,
-    "saves": 2.0,
+    "likes": 2.0,
+    "saves": 2.5,
     "shares": 2.5,
-    "time_spent": 0.05,
+    "duration": 0.05,
 }
 DECAY_LAMBDA = 0.1
 WEIGHTS = {
