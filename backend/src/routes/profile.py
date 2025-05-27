@@ -22,9 +22,11 @@ async def get_profile(profile_id: str):
         email=profile["email"],
         phone=profile.get("phone"),
         location=profile.get("location", None),
-        tags=profile.get("tags", []),
+        tags=profile.get("tags") or [],
         xp=profile.get("xp", 0),
-        badges=profile.get("badges", [])
+        badges=profile.get("badges") or [],
+        last_login=profile.get("last_login"),
+        streak=profile.get("streak", 0)
     )
 
 @router.post("/{profile_id}", response_model=Profile)
@@ -51,7 +53,9 @@ async def update_profile(profile_id: str, profile_update: ProfileUpdate):
         location=profile.get("location"),
         tags=profile.get("tags", []),
         xp=profile.get("xp", 0),
-        badges=profile.get("badges", [])
+        badges=profile.get("badges", []),
+        last_login=profile.get("last_login"),
+        streak=profile.get("streak", 0)
     )
 
 @router.delete("/{profile_id}", response_model=dict)

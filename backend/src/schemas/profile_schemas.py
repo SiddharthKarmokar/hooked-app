@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from bson import ObjectId
 from typing import Optional, List
+from datetime import datetime
 
 class Profile(BaseModel):
     id: str
@@ -11,6 +12,8 @@ class Profile(BaseModel):
     tags: List[str] = Field(default_factory=list)
     xp: int = 0
     badges: List[str] = Field(default_factory=list)
+    last_login: Optional[datetime] = None
+    streak: int = 0
 
 class ProfileUpdate(BaseModel):
     username: str = Field(..., min_length=3)

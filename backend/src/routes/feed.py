@@ -125,7 +125,7 @@ async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
     except Exception as e:
         logger.exception("Failed to fetch trending feed")
         raise HTTPException(
-            status_code=500,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Error while generating trending feed"
         )
 
@@ -273,10 +273,6 @@ class FeedItem(BaseModel):
 class DummyFeedResponse(BaseModel):
     feed: List[FeedItem]
 
-class QuizQuestion(BaseModel):
-    question: str
-    options: List[str]
-    answer: str
 # --- Dummy Endpoint ---
 
 @router.get("/testsearch/{profile_id}", response_model=DummyFeedResponse)

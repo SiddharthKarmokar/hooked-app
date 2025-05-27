@@ -1,6 +1,7 @@
 # MPAD Feed Generation Engine
-
 This module implements **Multifactor Sequential Reranking with Perception-Aware Diversification (MPAD)** — a hybrid recommendation engine that combines **interest modeling**, **recency/popularity/exploration reranking**, and **MMR-based diversification**.
+
+> **Note:** This implementation makes specific **simplifications and modifications** to the original approach proposed in [MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification](https://arxiv.org/abs/2305.12420). In particular, we **omit** the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.
 
 ---
 
@@ -8,9 +9,23 @@ This module implements **Multifactor Sequential Reranking with Perception-Aware 
 
 The system has three major stages:
 
-1. **User Interest Vector Construction**  
-2. **Hook Scoring with Popularity, Recency, and Exploration Adjustments**  
+1. **User Interest Vector Construction**
+2. **Hook Scoring with Popularity, Recency, and Exploration Adjustments**
 3. **Diversified Feed Generation via Maximal Marginal Relevance (MMR)**
+
+---
+
+## Key Differences from the Original Paper
+
+This implementation intentionally deviates from the original MPAD model for performance and simplicity:
+
+* ❌ **Bi-Sequential Determinantal Point Process (DPP):**
+  Removed in favor of a **simpler MMR-based reranking** for diversity, improving runtime efficiency and easing tuning.
+
+* ❌ **Perception-Aware Kernel for Similarity:**
+  Replaced with a **Jaccard similarity on hook tags**, allowing interpretable and tag-based diversity computation without complex embedding comparisons.
+
+These changes maintain the core idea of balancing personalization with diversity and exploration, while enabling easier deployment and scaling.
 
 ---
 
@@ -20,15 +35,13 @@ The system has three major stages:
 
 #### Formula:
 
-\[
-\text{score} = \left(w_a + d \cdot w_d\right) \cdot e^{-\lambda \cdot \text{daysAgo}}
-\]
+![score formula](/docs/images/mpad_score.svg)
 
-- \( w_a \): weight for action (click, like, etc.) from `INTERACTION_WEIGHTS`
-- \( d \): interaction duration
-- \( w_d \): weight for duration (from `INTERACTION_WEIGHTS['duration']`)
-- \( \lambda \): decay rate constant (`DECAY_LAMBDA`)
-- \( \text{daysAgo} \): days since hook creation
+- ![w_a](/docs/images/w_a.svg) : weight for action (click, like, etc.) from `INTERACTION_WEIGHTS`
+- ![d](/docs/images/d.svg) : interaction duration
+- ![w_d](/docs/images/w_d.svg) : weight for duration (from `INTERACTION_WEIGHTS['duration']`)
+- ![lambda](/docs/images/lambda.svg) : decay rate constant (`DECAY_LAMBDA`)
+- ![text{daysAgo}](/docs/images/daysAgo.svg) : days since hook creation
 
 ### Decay Rationale:
 
@@ -51,16 +64,14 @@ Older content becomes less relevant over time using an **exponential decay**.
 
 #### Formula:
 
-\[
-\text{total\_score} = \alpha \cdot \text{base} + \beta \cdot \text{recency} + \gamma \cdot \text{popularity} + \delta \cdot \text{exploration}
-\]
+![reranking_score](/docs/images/reranking_score.svg)
 
 Where:
 - Base score = dot product of interest vector and hook tags
-- Recency = \( e^{-\frac{\text{daysOld}}{7}} \)
+- Recency = ![e_daysAgo](/docs/images/e_daysAgo.svg)
 - Popularity = normalized view count
 - Exploration = random factor in `[0.01, 0.1]`
-- Weights \( \alpha, \beta, \gamma, \delta \) from the `WEIGHTS` dictionary
+- Weights ![abgd](/docs/images/alpha_beta_gamma_delta.svg)  from the `WEIGHTS` dictionary
 
 ### Purpose:
 
@@ -77,21 +88,17 @@ Balances **personal relevance** with:
 
 #### MMR Formula:
 
-\[
-\text{MMR}(h) = \lambda \cdot \text{Relevance}(h) - (1 - \lambda) \cdot \max_{s \in S} \text{Similarity}(h, s)
-\]
+![mmr_formula](/docs/images/mmr_formula.svg)
 
-- \( S \): already selected hooks
+- ![s](/docs/images/s.svg) : already selected hooks
 - Similarity = **Jaccard Similarity** on tags:
-  \[
-  \text{sim}(A, B) = \frac{|A \cap B|}{|A \cup B|}
-  \]
+![jacard_similarity](/docs/images/jacard_similarity.svg)
 
 ### Diversification Tradeoff:
 
-- \( \lambda = 1 \): pure relevance
-- \( \lambda = 0 \): pure diversity
-- \( \lambda \in (0, 1) \): hybrid
+- ![lambda_1](/docs/images/lambda_1.svg) : pure relevance
+- ![lambda_0](/docs/images/lambda_0.svg) : pure diversity
+- ![lambda_in_01](/docs/images/lambda_in_01.svg) : hybrid
 
 ---
 
