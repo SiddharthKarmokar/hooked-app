@@ -22,6 +22,7 @@ class UserOut(BaseModel):
     tags: Optional[List[str]] = Field(default_factory=list)
     xp: int
     badges: List[str] = Field(default_factory=list)
+    streak: int
 
     model_config = ConfigDict(from_attributes=True)  # replaces orm_mode = True
 

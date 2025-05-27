@@ -66,6 +66,7 @@ async def register_user(data: RegisterRequest):
             detail="Internal server error"
         )        
 
+
 async def login_user(user: LoginRequest):
     try:
         db_user = await users_collection.find_one({"email": user.email})
@@ -81,19 +82,31 @@ async def login_user(user: LoginRequest):
         if not security.verify_password(user.password, db_user["password_hash"]):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Incorrect password")
 
-        last_login = db_user.get("last_login", datetime(2000, 1, 1, tzinfo=timezone.utc))
         now = datetime.now(timezone.utc)
+        last_login = db_user.get("last_login", datetime(2000, 1, 1, tzinfo=timezone.utc))
+        last_streak = db_user.get("streak", 0)
+
+        updates = {}
+        updated_streak = last_streak
 
         if last_login.date() < now.date():
-            await users_collection.update_one(
-                {"_id": db_user["_id"]},
-                {
-                    "$inc": {"xp": LOGIN_XP},
-                    "$set": {"last_login": now}
+            if last_login.date() == (now - timedelta(days=1)).date():
+                updated_streak += 1
+            else:
+                updated_streak = 1  # reset
+
+            updates = {
+                "$inc": {"xp": LOGIN_XP},
+                "$set": {
+                    "last_login": now,
+                    "streak": updated_streak
                 }
-            )
+            }
+
+            await users_collection.update_one({"_id": db_user["_id"]}, updates)
             db_user["xp"] += LOGIN_XP
             db_user["last_login"] = now
+            db_user["streak"] = updated_streak
 
         token = security.create_access_token({"sub": str(db_user["_id"])})
 
@@ -105,7 +118,8 @@ async def login_user(user: LoginRequest):
             location=db_user.get("location"),
             tags=db_user.get("tags", []),
             xp=db_user.get("xp", 0),
-            badges=db_user.get("badges", [])
+            badges=db_user.get("badges", []),
+            streak=db_user.get("streak", 0)
         )
 
         return TokenResponse(
