@@ -9,6 +9,7 @@ from src.constants import SEARCH_TEMPERATURE, NUMBER_OF_TRENDING_HOOKS
 from src.config.game import SEARCH_XP
 from src.services.game import update_xp
 from src.services.game import generate_quiz
+from typing import List
 from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
 from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES, N_VALUE
@@ -18,6 +19,7 @@ from src.constants import TOPICS
 from src.services.perplexity import PPLX
 from src.services.gemini import GEMINI
 from src.services.mpad import generate_mpad_feed
+from pydantic import BaseModel, Field
 from datetime import datetime, timezone
 from src import logger
 import asyncio
@@ -242,6 +244,77 @@ async def generate_feed(profile_id:str):
             status_code=500,
             detail="Failed to generate personalized feed"
         )
+
+
+# --- Schema Definitions ---
+
+class ExpandedContent(BaseModel):
+    fullExplanation: str
+    mindBlowingFact: str
+    realWorldConnection: str
+
+class FeedItem(BaseModel):
+    _id: str
+    headline: str
+    hookText: str
+    analogy: str
+    category: str
+    tags: List[str]
+    img_desc: str
+    expandedContent: ExpandedContent
+    citations: List[str]
+    relatedTopics: List[str]
+    sourceInfo: dict
+    metadata: dict
+    image_base64: str = None
+    quiz: dict = None
+
+class DummyFeedResponse(BaseModel):
+    feed: List[FeedItem]
+
+# --- Dummy Endpoint ---
+
+@router.get("/search/{profile_id}", response_model=DummyFeedResponse)
+async def test_search(profile_id: str, q: str = Query(...)):
+    dummy_hook = FeedItem(
+        _id="68342f7480bcd9332ee04732",
+        headline="Crucibles of the Clouds: What Really Happens on Airplanes? A Lifted Veil High Across Stunning Journeys Beneath Ceiling and Floor, Both Uncommon and Spellbinding.",
+        hookText="From whispered mysteries beneath cabin seats to the unseen camaraderie between seatmates sharing silent adventures, the airplane world crackles with secrets small and sprawling—rarely as neat as your well-packed carry-on[1][4][5].",
+        analogy="",
+        category="Education",
+        tags=["science", "history", "art", "technology", "science"],
+        img_desc="Skyward cabin—a single glow lighting faces from varied stories aboard the wings above midnight blue landscape.",
+        expandedContent=ExpandedContent(
+            fullExplanation="Planes are epic mixing zones of nerves and comforts—adolescence crossing turbulent clouds and gentle dawns alike. They incubate quick love (the passenger in your elbow space chatting through Atlantic turbulence) and surprising science found only amid pressurized air tanks and whisper-breath seats. You soar both physically from the tarmac up across stratospheres, and personally: from child daring the glass dome near engine thunder, through lost jewelry pressed beneath tray tables. What waits up those folded steps is hardly ever a simple arrival, but rather journeys inside a gliding labyrinth cramming wonder and worry together so tightly you seldom see one before you uncover another: the kindness around the onboard chef passing salt in a storm, flight crew teaching the latest rookie flusher, or an engineer stepping out halfway atop snowy Alps to explain which valve counts loudest; an international meeting spot whose every trip remains endlessly a crucible of creation or discovery just overhead wherever sky brushes us open.",
+            mindBlowingFact="More kinds of ‘silicon sandpipes for digital flight brains!’—pilidown secrets not taught in manuals lurk for those awake-eyed looking across old window seats before midnight.",
+            realWorldConnection="Just tonight over Boston runways, ordinary travelers recall: how many miles high does courtesy stretch, before oxygen scarcity leads new eyes to wonder about your neighbors as intensely as about weather down river (an unexpected science project)? Airspace isn’t boring, you just need to peep behind cockpit gismos; beyond economy and seatbacks await not airy tedium but dramatic theaters from takeoff onward till landing’s home signal shines."
+        ),
+        citations=["1", "4", "5"],
+        relatedTopics=[
+            "When will human experience split sky highways as neatly trains slice ground terrains? Maybe airplanes’ social code hints soon?",
+            "Are pressurized wings or emergency manuals inspiring the spacewalkers yet?",
+            "Onboard kitchens secretly stir secret diplomacy at new altitude each sunrise?",
+            "Did a pilot’s map flip a foreign hand toward yesterday’s breakfast plate beneath invisible ice sheets ahead cloud?"
+        ],
+        sourceInfo={
+            "sonarTopicId": "some_air_conquering_project_tl9e1q87dawt",
+            "generatedAt": "system current timestamp or simulation event id"
+        },
+        metadata={
+            "createdAt": "2024-05-25T12:05:47Z",
+            "popularity": 24.229,
+            "saveCount": 23,
+            "shareCount": 5,
+            "likeCount": 257,
+            "viewCount": 154,
+            "viral": 0
+        },
+        image_base64=None,
+        quiz=None
+    )
+
+    return DummyFeedResponse(feed=[dummy_hook])
+
 
 async def main():
     # await generate_hook()
