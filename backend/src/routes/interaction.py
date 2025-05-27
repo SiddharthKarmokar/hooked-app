@@ -56,7 +56,7 @@ async def log_interaction(payload: InteractionLog):
 
 @router.get('/popularity')
 async def popularity():
-    update_popularity()
+    await update_popularity()
 
 
 if __name__ == "__main__":

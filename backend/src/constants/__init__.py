@@ -44,6 +44,8 @@ POPULARITY_WEIGHTS = {
     "shareCount": 1.0,
 }
 
+NUMBER_OF_TRENDING_HOOKS = 6
+
 SYSTEM_MESSAGES = {
     "history":"""You are an AI feed item generator for a history-themed platform. Your job is to transform historical facts, events, user activity (like bookmarks, quiz progress), or curated articles into engaging feed messages. The tone should be informative, occasionally dramatic or surprising, and designed to spark curiosity or further exploration.
         Keep the format short and engaging:

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from bson import ObjectId
 from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
-from src.constants import SEARCH_TEMPERATURE
+from src.constants import SEARCH_TEMPERATURE, NUMBER_OF_TRENDING_HOOKS
 from src.config.game import SEARCH_XP
 from src.services.game import update_xp
 from src.services.game import generate_quiz
@@ -103,48 +103,15 @@ async def generate_hook(request: TopicRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred while generating hooks"
         )
-
-@router.get("/{profile_id}", response_model=FeedResponse)
-async def generate_feed(profile_id:str):
-    try:
-        current_user = await users_collection.find_one({"_id":ObjectId(profile_id)})
-        if not current_user:
-            logger.exception(f"User with id: {profile_id} does not exist")
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="User with this username or email does not exist"
-            )
-        if not current_user.get("tags"):
-            user_prefs = {
-                "tags": TOPICS
-            }
-        else:
-            user_prefs = {
-                "tags": current_user.get("tags")
-            }
     
-        hooks_cursor = hooks_collection.find({"tags": {"$in": user_prefs["tags"]}})
-        hooks = await hooks_cursor.to_list(length=None)
 
-        for hook in hooks:
-            hook["_id"] = str(hook["_id"])
-        
-        return FeedResponse(feed=hooks)
-
-    except Exception as e:
-        logger.exception("Error generating personalized feed")
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to generate personalized feed"
-        )
-
-@router.get("/trending", response_model=FeedResponse)
-async def get_trending_feed():
+@router.post("/trending", response_model=FeedResponse)
+async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
     try:
         trending_cursor = hooks_collection.find(
             {},
             sort=[("metadata.popularity", DESCENDING)]
-        ).limit(12)
+        ).limit(N)
 
         trending_hooks = await trending_cursor.to_list(length=12)
         for hook in trending_hooks:
@@ -242,10 +209,45 @@ async def generate_curated_feed(profile_id:str, N=N_VALUE):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Feed generation failed")
 
 
+@router.get("/{profile_id}", response_model=FeedResponse)
+async def generate_feed(profile_id:str):
+    try:
+        current_user = await users_collection.find_one({"_id":ObjectId(profile_id)})
+        if not current_user:
+            logger.exception(f"User with id: {profile_id} does not exist")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User with this username or email does not exist"
+            )
+        if not current_user.get("tags"):
+            user_prefs = {
+                "tags": TOPICS
+            }
+        else:
+            user_prefs = {
+                "tags": current_user.get("tags")
+            }
+    
+        hooks_cursor = hooks_collection.find({"tags": {"$in": user_prefs["tags"]}})
+        hooks = await hooks_cursor.to_list(length=None)
+
+        for hook in hooks:
+            hook["_id"] = str(hook["_id"])
+        
+        return FeedResponse(feed=hooks)
+
+    except Exception as e:
+        logger.exception("Error generating personalized feed")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to generate personalized feed"
+        )
+
 async def main():
     # await generate_hook()
     # await get_trending_feed("68308a6a3a9384931b941b7b")
-    await search_hook("something on elon musk")
+    # await search_hook("something on elon musk")
+    pass
 
 if __name__ == "__main__":
     asyncio.run(main())
