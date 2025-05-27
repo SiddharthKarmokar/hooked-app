@@ -272,6 +272,10 @@ class FeedItem(BaseModel):
 class DummyFeedResponse(BaseModel):
     feed: List[FeedItem]
 
+class QuizQuestion(BaseModel):
+    question: str
+    options: List[str]
+    answer: str
 # --- Dummy Endpoint ---
 
 @router.get("/search/{profile_id}", response_model=DummyFeedResponse)
@@ -310,7 +314,18 @@ async def test_search(profile_id: str, q: str = Query(...)):
             "viral": 0
         },
         image_base64=None,
-        quiz=None
+        quiz=[
+            QuizQuestion(
+                question="What is the primary scientific phenomenon that allows airplanes to stay aloft?",
+                options=[
+                    "A) Combustion in the engines",
+                    "B) Newton's third law",
+                    "C) Bernoulli's principle",
+                    "D) Magnetic levitation"
+                ],
+                answer="C) Bernoulli's principle"
+            )
+        ]
     )
 
     return DummyFeedResponse(feed=[dummy_hook])
