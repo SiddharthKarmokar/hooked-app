@@ -268,7 +268,7 @@ class FeedItem(BaseModel):
     sourceInfo: dict
     metadata: dict
     image_base64: str = None
-    quiz: dict = None
+    quiz: List[MCQ]
 
 class DummyFeedResponse(BaseModel):
     feed: List[FeedItem]
@@ -315,15 +315,18 @@ async def test_search(profile_id: str, q: str = Query(...)):
             "viral": 0
         },
         image_base64="thisIsDummyBase64",
-        quiz={
-            "quiz": [
-                {
-                    "question": "What is the capital of France?",
-                    "options": ["A) Berlin", "B) Madrid", "C) Paris", "D) Rome"],
-                    "answer": "C) Paris"
-                }
-            ]
-        }
+        quiz=[
+            {
+                "question": "Who is the original creator of Wordle?",
+                "options": [
+                    "A) Tracy Bennett",
+                    "B) Josh Wardle",
+                    "C) Palak Shah",
+                    "D) John Park"
+                ],
+                "answer": "B) Josh Wardle"
+            }
+        ]
     )
 
     return DummyFeedResponse(feed=[dummy_hook])
