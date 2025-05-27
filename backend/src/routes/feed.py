@@ -6,6 +6,7 @@ from bson import ObjectId
 from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
 from src.constants import SEARCH_TEMPERATURE, NUMBER_OF_TRENDING_HOOKS
+from src.schemas.quiz_schemas import QuizResponse, MCQ
 from src.config.game import SEARCH_XP
 from src.services.game import update_xp
 from src.services.game import generate_quiz
@@ -313,19 +314,16 @@ async def test_search(profile_id: str, q: str = Query(...)):
             "viewCount": 154,
             "viral": 0
         },
-        image_base64=None,
-        quiz=[
-            QuizQuestion(
-                question="What is the primary scientific phenomenon that allows airplanes to stay aloft?",
-                options=[
-                    "A) Combustion in the engines",
-                    "B) Newton's third law",
-                    "C) Bernoulli's principle",
-                    "D) Magnetic levitation"
-                ],
-                answer="C) Bernoulli's principle"
-            )
-        ]
+        image_base64="thisIsDummyBase64",
+        quiz={
+            "quiz": [
+                {
+                    "question": "What is the capital of France?",
+                    "options": ["A) Berlin", "B) Madrid", "C) Paris", "D) Rome"],
+                    "answer": "C) Paris"
+                }
+            ]
+        }
     )
 
     return DummyFeedResponse(feed=[dummy_hook])
