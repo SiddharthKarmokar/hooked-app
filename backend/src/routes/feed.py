@@ -278,7 +278,7 @@ class QuizQuestion(BaseModel):
     answer: str
 # --- Dummy Endpoint ---
 
-@router.get("/search/{profile_id}", response_model=DummyFeedResponse)
+@router.get("/testsearch/{profile_id}", response_model=DummyFeedResponse)
 async def test_search(profile_id: str, q: str = Query(...)):
     dummy_hook = FeedItem(
         _id="68342f7480bcd9332ee04732",
