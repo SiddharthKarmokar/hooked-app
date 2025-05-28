@@ -329,56 +329,24 @@ class DummyFeedResponse(BaseModel):
 
 @router.get("/testsearch/{profile_id}", response_model=DummyFeedResponse)
 async def test_search(profile_id: str, q: str = Query(...)):
-    dummy_hook = FeedItem(
-        _id="68342f7480bcd9332ee04732",
-        headline="Crucibles of the Clouds: What Really Happens on Airplanes? A Lifted Veil High Across Stunning Journeys Beneath Ceiling and Floor, Both Uncommon and Spellbinding.",
-        hookText="From whispered mysteries beneath cabin seats to the unseen camaraderie between seatmates sharing silent adventures, the airplane world crackles with secrets small and sprawling—rarely as neat as your well-packed carry-on[1][4][5].",
-        analogy="",
-        category="Education",
-        tags=["science", "history", "art", "technology", "science"],
-        img_desc="Skyward cabin—a single glow lighting faces from varied stories aboard the wings above midnight blue landscape.",
-        expandedContent=ExpandedContent(
-            fullExplanation="Planes are epic mixing zones of nerves and comforts—adolescence crossing turbulent clouds and gentle dawns alike. They incubate quick love (the passenger in your elbow space chatting through Atlantic turbulence) and surprising science found only amid pressurized air tanks and whisper-breath seats. You soar both physically from the tarmac up across stratospheres, and personally: from child daring the glass dome near engine thunder, through lost jewelry pressed beneath tray tables. What waits up those folded steps is hardly ever a simple arrival, but rather journeys inside a gliding labyrinth cramming wonder and worry together so tightly you seldom see one before you uncover another: the kindness around the onboard chef passing salt in a storm, flight crew teaching the latest rookie flusher, or an engineer stepping out halfway atop snowy Alps to explain which valve counts loudest; an international meeting spot whose every trip remains endlessly a crucible of creation or discovery just overhead wherever sky brushes us open.",
-            mindBlowingFact="More kinds of ‘silicon sandpipes for digital flight brains!’—pilidown secrets not taught in manuals lurk for those awake-eyed looking across old window seats before midnight.",
-            realWorldConnection="Just tonight over Boston runways, ordinary travelers recall: how many miles high does courtesy stretch, before oxygen scarcity leads new eyes to wonder about your neighbors as intensely as about weather down river (an unexpected science project)? Airspace isn’t boring, you just need to peep behind cockpit gismos; beyond economy and seatbacks await not airy tedium but dramatic theaters from takeoff onward till landing’s home signal shines."
-        ),
-        citations=["1", "4", "5"],
-        relatedTopics=[
-            "When will human experience split sky highways as neatly trains slice ground terrains? Maybe airplanes’ social code hints soon?",
-            "Are pressurized wings or emergency manuals inspiring the spacewalkers yet?",
-            "Onboard kitchens secretly stir secret diplomacy at new altitude each sunrise?",
-            "Did a pilot’s map flip a foreign hand toward yesterday’s breakfast plate beneath invisible ice sheets ahead cloud?"
-        ],
-        sourceInfo={
-            "sonarTopicId": "some_air_conquering_project_tl9e1q87dawt",
-            "generatedAt": "system current timestamp or simulation event id"
-        },
-        metadata={
-            "createdAt": "2024-05-25T12:05:47Z",
-            "popularity": 24.229,
-            "saveCount": 23,
-            "shareCount": 5,
-            "likeCount": 257,
-            "viewCount": 154,
-            "viral": 0
-        },
-        image_base64="thisIsDummyBase64",
-        quiz=[
-            {
-                "question": "Who is the original creator of Wordle?",
-                "options": [
-                    "A) Tracy Bennett",
-                    "B) Josh Wardle",
-                    "C) Palak Shah",
-                    "D) John Park"
-                ],
-                "answer": "B) Josh Wardle"
-            }
-        ]
-    )
+    try:
+        file_path = Path(__file__).parent / "s_1.txt"
+        with open(file_path, "r", encoding="utf-8") as f:
+            hook_data = json.load(f)
 
-    return DummyFeedResponse(feed=[dummy_hook])
+        # Convert _id if needed
+        if isinstance(hook_data.get("_id"), dict) and "$oid" in hook_data["_id"]:
+            hook_data["_id"] = hook_data["_id"]["$oid"]
 
+        # Ensure it matches FeedItem schema
+        hook = FeedItem(**hook_data)
+
+        return DummyFeedResponse(feed=[hook])
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail="Failed to load test hook")
 
 async def main():
     # await generate_hook()
