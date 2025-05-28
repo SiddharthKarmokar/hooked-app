@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Query
 from pathlib import Path
 # from typing import List
+import json 
 from dotenv import load_dotenv
 from bson import ObjectId
 from pymongo import DESCENDING
@@ -116,7 +117,7 @@ async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
             sort=[("metadata.popularity", DESCENDING)]
         ).limit(N)
 
-        trending_hooks = await trending_cursor.to_list(length=12)
+        trending_hooks = await trending_cursor.to_list(length=N)
         for hook in trending_hooks:
             hook["_id"] = str(hook["_id"])
 
@@ -129,6 +130,57 @@ async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
             detail="Error while generating trending feed"
         )
 
+@router.post("/trending/test", response_model=FeedResponse)
+async def get_test_trending_feed():
+    try:
+        base_dir = Path(__file__).parent
+        file_paths = sorted(base_dir.glob("test_*.txt"))
+
+        hooks = []
+        for file_path in file_paths:
+            with open(file_path, "r", encoding='utf-8') as f:
+                hook_data = json.load(f)
+
+                if isinstance(hook_data.get("_id"), dict) and "$oid" in hook_data["_id"]:
+                    hook_data["_id"] = hook_data["_id"]["$oid"]
+
+                hooks.append(hook_data)
+
+        return FeedResponse(feed=hooks)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to generate test trending feed"
+        )
+
+@router.post("/test/{profile_id}", response_model=FeedResponse)
+async def get_test_feed():
+    try:
+        base_dir = Path(__file__).parent
+        file_paths = sorted(base_dir.glob("t_*.txt"))
+
+        hooks = []
+        for file_path in file_paths:
+            with open(file_path, "r", encoding='utf-8') as f:
+                hook_data = json.load(f)
+
+                if isinstance(hook_data.get("_id"), dict) and "$oid" in hook_data["_id"]:
+                    hook_data["_id"] = hook_data["_id"]["$oid"]
+
+                hooks.append(hook_data)
+
+        return FeedResponse(feed=hooks)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to generate test trending feed"
+        )
 
 @router.get("/search/{profile_id}", response_model=FeedResponse)
 async def search_hook(profile_id:str, q: str = Query(..., description="Search query")):
