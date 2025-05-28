@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from src.schemas.profile_schemas import Profile, ProfileUpdate
+from src.schemas.profile_schemas import Profile, ProfileUpdate, UpdateTagsRequest
 from src.utils.security import Security
 from src.database.mongo import users_collection
 from bson import ObjectId
@@ -22,9 +22,11 @@ async def get_profile(profile_id: str):
         email=profile["email"],
         phone=profile.get("phone"),
         location=profile.get("location", None),
-        tags=profile.get("tags", []),
+        tags=profile.get("tags") or [],
         xp=profile.get("xp", 0),
-        badges=profile.get("badges", [])
+        badges=profile.get("badges") or [],
+        last_login=profile.get("last_login"),
+        streak=profile.get("streak", 0)
     )
 
 @router.post("/{profile_id}", response_model=Profile)
@@ -51,7 +53,9 @@ async def update_profile(profile_id: str, profile_update: ProfileUpdate):
         location=profile.get("location"),
         tags=profile.get("tags", []),
         xp=profile.get("xp", 0),
-        badges=profile.get("badges", [])
+        badges=profile.get("badges", []),
+        last_login=profile.get("last_login"),
+        streak=profile.get("streak", 0)
     )
 
 @router.delete("/{profile_id}", response_model=dict)
@@ -61,3 +65,13 @@ async def delete_profile(profile_id: str):
     await users_collection.delete_one({"_id": ObjectId(profile_id)})
     
     return {"message": "Profile deleted successfully"}
+
+@router.put("/{profile_id}/tags")
+async def update_user_tags(profile_id: str, data: UpdateTagsRequest):
+    result = await users_collection.update_one(
+        {"_id": ObjectId(profile_id)},
+        {"$set": {"tags": data.tags}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User not found or tags unchanged")
+    return {"message": "Tags updated successfully"}

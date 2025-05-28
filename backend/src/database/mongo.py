@@ -6,3 +6,5 @@ client = AsyncIOMotorClient(settings.MONGO_DB_URI)
 db = client[DATABASE_NAME]
 users_collection = db["users"]
 hooks_collection = db["hooks"]
+log_collection = db["interactions"]
+profile_collection = db["profile"]

@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     JWT_HASH_KEY: str
     SENDGRID_API_KEY: str
     ENABLE_LOGGING: str
+    GOOGLE_API_KEY: str
     ENVIRONMENT: str = "development"
 
     model_config = SettingsConfigDict(env_file=".env") 

@@ -1,5 +1,3 @@
-import os
-import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -8,13 +6,45 @@ SCHEMA_DIR = BASE_DIR / "schema"
 DATABASE_NAME = "hooked_db"
 
 VERIFICATION_LINK = "http://hooked-cluster-alb-1100697768.us-east-1.elb.amazonaws.com/api/auth/verify-email"
+# 'http://localhost:8000/verify-email'
 NO_REPLY_MAIL = "eliomorningstar420@gmail.com"
 
 MODEL_NAME = "sonar-pro"
 TEMPERATURE = 1
 
+IMAGE_MODEL_NAME = "models/gemini-2.0-flash-preview-image-generation"
+
 TOPICS = ["history", "art"]
 
+INTERACTION_WEIGHTS = {
+    "clicks": 1.0,
+    "likes": 2.0,
+    "saves": 2.5,
+    "shares": 2.5,
+    "duration": 0.05,
+}
+DECAY_LAMBDA = 0.1
+WEIGHTS = {
+    "base_score": 0.5,
+    "recency": 0.2,
+    "popularity": 0.2,
+    "exploration_bonus": 0.1,
+}
+MMR_LAMBDA = 0.7#higer prioritize relevance, lower prioritize diversity
+N_VALUE = 2
+CANDIDATE_POOL_FACTOR = 3
+TIME_DECAY_LAMBDA = 0.15
+
+SEARCH_TEMPERATURE = 1.8
+
+POPULARITY_WEIGHTS = {
+    "viewCount": 0.1,
+    "likeCount": 0.5,
+    "saveCount": 0.8,
+    "shareCount": 1.0,
+}
+
+NUMBER_OF_TRENDING_HOOKS = 6
 
 SYSTEM_MESSAGES = {
     "history":"""You are an AI feed item generator for a history-themed platform. Your job is to transform historical facts, events, user activity (like bookmarks, quiz progress), or curated articles into engaging feed messages. The tone should be informative, occasionally dramatic or surprising, and designed to spark curiosity or further exploration.

@@ -9,7 +9,7 @@
     },
     "hookText": {
       "type": "string",
-      "description": "A short, intriguing description expanding on the headline"
+      "description": "A very short, intriguing description expanding on the headline"
     },
     "analogy": {
       "type": "string",
@@ -53,6 +53,13 @@
       },
       "required": ["fullExplanation", "mindBlowingFact", "realWorldConnection"]
     },
+    "citations": {
+      "type": "array",
+      "description": "List of source references used in the content in url",
+      "items": {
+        "type": "string"
+      }
+    },
     "relatedTopics": {
       "type": "array",
       "description": "Related or follow-up topics for further exploration",
@@ -66,7 +73,7 @@
       "properties": {
         "sonarTopicId": {
           "type": "string",
-          "description": "Unique identifier for the source or topic"
+          "description": "Unique identifier for the source or topic(one word decribing source or topic)"
         },
         "generatedAt": {
           "type": "string",
@@ -75,30 +82,6 @@
         }
       },
       "required": ["sonarTopicId", "generatedAt"]
-    },
-    "metadata": {
-      "type": "object",
-      "description": "Metadata about usage and popularity",
-      "properties": {
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when this content was created"
-        },
-        "popularity": {
-          "type": "integer",
-          "description": "Popularity score based on engagement"
-        },
-        "saveCount": {
-          "type": "integer",
-          "description": "Number of times this item was saved"
-        },
-        "shareCount": {
-          "type": "integer",
-          "description": "Number of times this item was shared"
-        }
-      },
-      "required": ["createdAt", "popularity", "saveCount", "shareCount"]
     }
   },
   "required": [
@@ -109,6 +92,7 @@
     "tags",
     "img_desc",
     "expandedContent",
+    "citations",
     "relatedTopics",
     "sourceInfo",
     "metadata"

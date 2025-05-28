@@ -7,7 +7,7 @@ class RegisterRequest(BaseModel):
     phone: Optional[str] = Field(..., min_length=4, max_length=10)
     password: str = Field(..., min_length=6)
     location: Optional[str] = None
-    tags: Optional[List[str]]
+
 
 class RegisterResponse(BaseModel):
     message: str
@@ -19,15 +19,17 @@ class UserOut(BaseModel):
     email: str
     phone: Optional[str] = None
     location: Optional[str] = None
-    tags: List[str] = []
+    tags: Optional[List[str]] = Field(default_factory=list)
     xp: int
-    badges: List[str] = []
+    badges: List[str] = Field(default_factory=list)
+    streak: int
 
     model_config = ConfigDict(from_attributes=True)  # replaces orm_mode = True
 
 class TokenResponse(BaseModel):
     user: UserOut
     token: str
+    needs_tags: Optional[bool] = False
 
 class LoginRequest(BaseModel):
     email: EmailStr

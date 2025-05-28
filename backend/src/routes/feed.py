@@ -1,16 +1,31 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Query
 from pathlib import Path
-from typing import List
+# from typing import List
+from dotenv import load_dotenv
 from bson import ObjectId
+from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
+from src.constants import SEARCH_TEMPERATURE, NUMBER_OF_TRENDING_HOOKS
+from src.schemas.quiz_schemas import QuizResponse, MCQ
+from src.config.game import SEARCH_XP
+from src.services.game import update_xp
+from src.services.game import generate_quiz
+from typing import List
 from src.database.mongo import hooks_collection, users_collection
 from src.utils.common import load_json
-from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES
+from src.constants import SCHEMA_DIR, SYSTEM_MESSAGES, N_VALUE
 from src.schemas.pplx_schemas import FeedResponse, TopicRequest, HookResponse
+from src.services.mpad import update_profile
 from src.constants import TOPICS 
 from src.services.perplexity import PPLX
+from src.services.gemini import GEMINI
+from src.services.mpad import generate_mpad_feed
+from pydantic import BaseModel, Field
+from datetime import datetime, timezone
 from src import logger
 import asyncio
+import random
+load_dotenv()
 
 router = APIRouter()
 
@@ -23,6 +38,7 @@ async def generate_hook(request: TopicRequest):
         feed_validation_schema = load_json(feed_validation_filepath)
 
         pplx = PPLX()
+        gemini = GEMINI()
         feed = []
 
         for topic in topics:
@@ -34,13 +50,33 @@ async def generate_hook(request: TopicRequest):
                 if "category" not in hook:
                     hook["category"] = topic.capitalize()
 
+                # Generate image if description exists
+                image_prompt = hook.get('img_desc')
+                if image_prompt:
+                    try:
+                        image_base64 = gemini.get_image(input=image_prompt)
+                        hook["image_base64"] = image_base64
+                    except Exception as img_err:
+                        logger.error(f"Image generation failed for topic {topic}: {img_err}")
+                        hook["image_base64"] = None
+
+                hook["metadata"] = {
+                    "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
+                    "popularity": 0,
+                    "saveCount": random.randint(1, 50),
+                    "shareCount": random.randint(1, 100),
+                    "likeCount": random.randint(5, 500),
+                    "viewCount": random.randint(5, 500),
+                    "viral": random.randint(0, 1)
+                }
+
                 feed.append(hook)
 
                 # Insert into MongoDB
                 insert_result = await hooks_collection.insert_one(hook)
                 logger.debug("Inserted hook with ID: %s", insert_result.inserted_id)
 
-            except KeyError as e:
+            except KeyError:
                 logger.error("System message not found for topic: %s", topic)
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,7 +88,7 @@ async def generate_hook(request: TopicRequest):
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Database insertion error"
                 )
-            except Exception as e:
+            except Exception:
                 logger.exception("Unexpected error while generating hook for topic: %s", topic)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -61,15 +97,120 @@ async def generate_hook(request: TopicRequest):
 
         logger.info("Successfully generated and stored %d hooks", len(feed))
         return {
-            "status":"feed successfully generated"
+            "status": "feed successfully generated"
         }
 
-    except Exception as e:
+    except Exception:
         logger.exception("Unhandled error in /hook route")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred while generating hooks"
         )
+    
+
+@router.post("/trending", response_model=FeedResponse)
+async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
+    try:
+        trending_cursor = hooks_collection.find(
+            {},
+            sort=[("metadata.popularity", DESCENDING)]
+        ).limit(N)
+
+        trending_hooks = await trending_cursor.to_list(length=12)
+        for hook in trending_hooks:
+            hook["_id"] = str(hook["_id"])
+
+        return FeedResponse(feed=trending_hooks)
+
+    except Exception as e:
+        logger.exception("Failed to fetch trending feed")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error while generating trending feed"
+        )
+
+
+@router.get("/search/{profile_id}", response_model=FeedResponse)
+async def search_hook(profile_id:str, q: str = Query(..., description="Search query")):
+    try:
+        logger.info("Generating a hook for search query: %s", q)
+        validation_filepath: Path = SCHEMA_DIR / "feed_response.json"
+        validation_schema = load_json(validation_filepath)
+
+        pplx = PPLX(temperature=SEARCH_TEMPERATURE)
+        gemini = GEMINI()
+
+        pplx.set_template(system_msg="You are a creative content writer who generates eye-catching, educational hooks based on user input.")
+
+        try:
+            hook = pplx.get_prompt(
+                schema=validation_schema,
+                input=f"Generate a creative and informative hook based on: '{q}'. Give variety from other results."
+            )
+
+            hook["category"] = hook.get("category", "Search")
+            hook["tags"] = [tag.strip().lower() for tag in hook.get("tags", [])] or ["misc"]
+
+            hook["metadata"] = {
+                "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
+                "popularity": 1,
+                "saveCount": random.randint(1, 50),
+                "shareCount": random.randint(1, 100),
+                "likeCount": random.randint(5, 500),
+                "viewCount": random.randint(5, 500),
+                "viral": random.randint(0, 1)
+            }
+
+            image_prompt = hook.get("img_desc")
+            if image_prompt:
+                try:
+                    hook["image_base64"] = gemini.get_image(input=image_prompt)
+                except Exception as img_err:
+                    logger.warning(f"Image generation failed: {img_err}")
+                    hook["image_base64"] = None
+
+            result = await hooks_collection.insert_one(hook)
+            hook["_id"] = str(result.inserted_id)
+
+            try:
+                quiz = generate_quiz(hook)
+                hook["quiz"] = quiz
+            except Exception as quiz_err:
+                logger.warning(f"Quiz generation failed: {quiz_err}")
+                hook["quiz"] = None
+            try:
+                await update_xp(user_id=profile_id, xp=SEARCH_XP)
+            except:
+                logger.error(f"User with {profile_id} had some trouble updating xp")
+        except Exception as sub_error:
+            logger.warning("One of the hooks failed: %s", sub_error)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Hook generation failed"
+            )
+
+        return FeedResponse(feed=[hook])
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logger.exception("Failed to generate search-based hooks")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error generating hooks from search query"
+        )
+
+
+@router.post("/curated/{profile_id}", response_model=FeedResponse)
+async def generate_curated_feed(profile_id:str, N=N_VALUE):
+    try:
+        await update_profile()
+        feed = await generate_mpad_feed(user_id=profile_id, N=N_VALUE)
+        return FeedResponse(feed=feed)
+    except Exception as e:
+        logger.error(f"Errors occured while generating curated feed\n{e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Feed generation failed")
+
 
 @router.get("/{profile_id}", response_model=FeedResponse)
 async def generate_feed(profile_id:str):
@@ -105,9 +246,93 @@ async def generate_feed(profile_id:str):
             detail="Failed to generate personalized feed"
         )
 
+
+# --- Schema Definitions ---
+
+class ExpandedContent(BaseModel):
+    fullExplanation: str
+    mindBlowingFact: str
+    realWorldConnection: str
+
+class FeedItem(BaseModel):
+    _id: str
+    headline: str
+    hookText: str
+    analogy: str
+    category: str
+    tags: List[str]
+    img_desc: str
+    expandedContent: ExpandedContent
+    citations: List[str]
+    relatedTopics: List[str]
+    sourceInfo: dict
+    metadata: dict
+    image_base64: str = None
+    quiz: List[MCQ]
+
+class DummyFeedResponse(BaseModel):
+    feed: List[FeedItem]
+
+# --- Dummy Endpoint ---
+
+@router.get("/testsearch/{profile_id}", response_model=DummyFeedResponse)
+async def test_search(profile_id: str, q: str = Query(...)):
+    dummy_hook = FeedItem(
+        _id="68342f7480bcd9332ee04732",
+        headline="Crucibles of the Clouds: What Really Happens on Airplanes? A Lifted Veil High Across Stunning Journeys Beneath Ceiling and Floor, Both Uncommon and Spellbinding.",
+        hookText="From whispered mysteries beneath cabin seats to the unseen camaraderie between seatmates sharing silent adventures, the airplane world crackles with secrets small and sprawling—rarely as neat as your well-packed carry-on[1][4][5].",
+        analogy="",
+        category="Education",
+        tags=["science", "history", "art", "technology", "science"],
+        img_desc="Skyward cabin—a single glow lighting faces from varied stories aboard the wings above midnight blue landscape.",
+        expandedContent=ExpandedContent(
+            fullExplanation="Planes are epic mixing zones of nerves and comforts—adolescence crossing turbulent clouds and gentle dawns alike. They incubate quick love (the passenger in your elbow space chatting through Atlantic turbulence) and surprising science found only amid pressurized air tanks and whisper-breath seats. You soar both physically from the tarmac up across stratospheres, and personally: from child daring the glass dome near engine thunder, through lost jewelry pressed beneath tray tables. What waits up those folded steps is hardly ever a simple arrival, but rather journeys inside a gliding labyrinth cramming wonder and worry together so tightly you seldom see one before you uncover another: the kindness around the onboard chef passing salt in a storm, flight crew teaching the latest rookie flusher, or an engineer stepping out halfway atop snowy Alps to explain which valve counts loudest; an international meeting spot whose every trip remains endlessly a crucible of creation or discovery just overhead wherever sky brushes us open.",
+            mindBlowingFact="More kinds of ‘silicon sandpipes for digital flight brains!’—pilidown secrets not taught in manuals lurk for those awake-eyed looking across old window seats before midnight.",
+            realWorldConnection="Just tonight over Boston runways, ordinary travelers recall: how many miles high does courtesy stretch, before oxygen scarcity leads new eyes to wonder about your neighbors as intensely as about weather down river (an unexpected science project)? Airspace isn’t boring, you just need to peep behind cockpit gismos; beyond economy and seatbacks await not airy tedium but dramatic theaters from takeoff onward till landing’s home signal shines."
+        ),
+        citations=["1", "4", "5"],
+        relatedTopics=[
+            "When will human experience split sky highways as neatly trains slice ground terrains? Maybe airplanes’ social code hints soon?",
+            "Are pressurized wings or emergency manuals inspiring the spacewalkers yet?",
+            "Onboard kitchens secretly stir secret diplomacy at new altitude each sunrise?",
+            "Did a pilot’s map flip a foreign hand toward yesterday’s breakfast plate beneath invisible ice sheets ahead cloud?"
+        ],
+        sourceInfo={
+            "sonarTopicId": "some_air_conquering_project_tl9e1q87dawt",
+            "generatedAt": "system current timestamp or simulation event id"
+        },
+        metadata={
+            "createdAt": "2024-05-25T12:05:47Z",
+            "popularity": 24.229,
+            "saveCount": 23,
+            "shareCount": 5,
+            "likeCount": 257,
+            "viewCount": 154,
+            "viral": 0
+        },
+        image_base64="thisIsDummyBase64",
+        quiz=[
+            {
+                "question": "Who is the original creator of Wordle?",
+                "options": [
+                    "A) Tracy Bennett",
+                    "B) Josh Wardle",
+                    "C) Palak Shah",
+                    "D) John Park"
+                ],
+                "answer": "B) Josh Wardle"
+            }
+        ]
+    )
+
+    return DummyFeedResponse(feed=[dummy_hook])
+
+
 async def main():
-    await generate_hook()
-    await generate_feed("682b71693a9384931b9340cd")
+    # await generate_hook()
+    # await get_trending_feed("68308a6a3a9384931b941b7b")
+    # await search_hook("something on elon musk")
+    pass
 
 if __name__ == "__main__":
     asyncio.run(main())
