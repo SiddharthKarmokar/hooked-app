@@ -172,7 +172,7 @@ From XP systems to badge logic and learning path generation, we built custom flo
 
 ## 📬 Contact
 
-Created by **Aishwarya Jakka, Rahul Rao, and Siddarth Karmokar**
+Created by **Aishwarya Jakka, Rahul Rao, and Siddharth Karmokar**
 
 [aishwaryajakka@gmail.com](mailto:aishwaryajakka@gmail.com)
 [siddkarmokar@gmail.com](mailto:siddkarmokar@gmail.com)
