@@ -1,4 +1,4 @@
-# 🎣 HookED – Learning That Slaps
+# [🎣 HookED – Learning That Slaps](https://siddharthkarmokar.github.io/hooked-app/)
 
 *A gamified microlearning app for neurodivergent minds and curiosity-driven learners—powered by the Perplexity Sonar API.*
 
@@ -149,6 +149,8 @@ From XP systems to badge logic and learning path generation, we built custom flo
 ## 🔒 Repository
 
 [Github](https://github.com/rahulraocoder/hooked-app/)
+[Docs](https://siddharthkarmokar.github.io/hooked-app/)
+
 **Shared With:**
 
 * [james.liounis@perplexity.ai](mailto:james.liounis@perplexity.ai)
