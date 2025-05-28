@@ -6,8 +6,6 @@ on:
       - main
     paths:
       - 'backend/**'
-      - 'docs/**'
-      - 'mkdocs.yml'
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -17,9 +15,8 @@ env:
 
 jobs:
   deploy:
-    if: github.event.head_commit.message != 'docs: update site'
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -120,16 +117,3 @@ jobs:
           --cluster $ECS_CLUSTER_NAME \
           --service $ECS_SERVICE_NAME \
           --task-definition ${{ env.TASK_DEF_ARN }}
-  
-  deploy-site:
-    if: |
-      contains(github.event.head_commit.message, 'docs') ||
-      github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
