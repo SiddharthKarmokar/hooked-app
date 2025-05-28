@@ -1,4 +1,4 @@
-site_name: HookeD
+site_name: HookED
 
 theme:
   name: material
@@ -25,6 +25,7 @@ extra_css:
 
 nav:
   - Home: index.md
+  - Frontend: frontend.md
   - Routes: routes.md
   - Feed: feed.md
   - Trending: trending.md
