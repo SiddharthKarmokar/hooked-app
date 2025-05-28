@@ -142,7 +142,7 @@ From XP systems to badge logic and learning path generation, we built custom flo
 
 ## 🎥 Demo Video
 
-📺 [Watch Demo (3 mins)](https://youtu.be/your-demo-link)
+📺 [Watch Demo (3 mins)](https://www.youtube.com/watch?v=FUO4GSRWHn8)
 
 ---
 
