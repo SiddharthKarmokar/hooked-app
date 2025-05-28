@@ -1,19 +1,19 @@
 {
   "title": "HookFeedResponse",
-  "description": "Detailed schema for a generated educational or informative feed item",
+  "description": "Detailed schema for a generated educational or informative feed item in 60 words or less",
   "type": "object",
   "properties": {
     "headline": {
       "type": "string",
-      "description": "The main hook or title to catch the user's attention"
+      "description": "The main hook or title to catch the user's attention in 60 words or less"
     },
     "hookText": {
       "type": "string",
-      "description": "A very short, intriguing description expanding on the headline"
+      "description": "A very short, intriguing description expanding on the headline in 60 words or less"
     },
     "analogy": {
       "type": "string",
-      "description": "A simple analogy to help users understand the concept"
+      "description": "A simple analogy to help users understand the concept in 60 words or less"
     },
     "category": {
       "type": "string",
@@ -24,7 +24,7 @@
       "description": "List of descriptive tags to help with discoverability",
       "items": {
         "type": "string",
-        "enum": ["science", "memes", "art", "sports", "movies", "music", "technology", "history"]
+        "enum": ["science", "memes", "art", "sports", "movies", "music", "technology", "history", "misc"]
       },
       "uniqueItems": true,
       "minItems": 1,
@@ -36,19 +36,19 @@
     },
     "expandedContent": {
       "type": "object",
-      "description": "Expanded content with structured explanation and real-world connections",
+      "description": "Expanded content with structured explanation and real-world connections in 60 words or less",
       "properties": {
         "fullExplanation": {
           "type": "string",
-          "description": "A detailed explanation of the concept"
+          "description": "A detailed explanation of the concept in 60 words or less"
         },
         "mindBlowingFact": {
           "type": "string",
-          "description": "A surprising or impressive fact about the topic"
+          "description": "A surprising or impressive fact about the topic in 60 words or less"
         },
         "realWorldConnection": {
           "type": "string",
-          "description": "Explanation of how the concept connects to the real world"
+          "description": "Explanation of how the concept connects to the real world in 60 words or less"
         }
       },
       "required": ["fullExplanation", "mindBlowingFact", "realWorldConnection"]
@@ -62,7 +62,7 @@
     },
     "relatedTopics": {
       "type": "array",
-      "description": "Related or follow-up topics for further exploration",
+      "description": "Related or follow-up topics for further exploration in 60 words or less",
       "items": {
         "type": "string"
       }
