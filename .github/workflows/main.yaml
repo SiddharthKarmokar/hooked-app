@@ -45,6 +45,8 @@ jobs:
         echo "JWT_HASH_KEY=${{ secrets.JWT_HASH_KEY }}" >> $GITHUB_ENV
         echo "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" >> $GITHUB_ENV
         echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
+        echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> $GITHUB_ENV
+        echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
         echo "ENABLE_LOGGING=true" >> $GITHUB_ENV
 
     - name: Run Pytest
@@ -97,6 +99,14 @@ jobs:
         grep PPLX_API_KEY new-task-def.json
 
         sed -i "s|GOOGLE_API_KEY_PLACEHOLDER|${{ secrets.GOOGLE_API_KEY }}|g" new-task-def.json
+        echo "GOOGLE_API_KEY set:"
+        grep GOOGLE_API_KEY new-task-def.json
+        
+        sed -i "s|AWS_REGION_PLACEHOLDER|${{ secrets.AWS_REGION }}|g" new-task-def.json
+        echo "GOOGLE_API_KEY set:"
+        grep GOOGLE_API_KEY new-task-def.json
+        
+        sed -i "s|S3_BUCKET_NAME_PLACEHOLDER|${{ secrets.S3_BUCKET_NAME }}|g" new-task-def.json
         echo "GOOGLE_API_KEY set:"
         grep GOOGLE_API_KEY new-task-def.json
 

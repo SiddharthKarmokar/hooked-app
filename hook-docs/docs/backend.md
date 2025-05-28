@@ -1,11 +1,11 @@
 # HookED Backend Documentation
 
 > **Status**: Active Development
-> **Stack**: FastAPI · Perplexity AI (PPLX) · MongoDB · ECS · Docker
+> **Stack**: FastAPI · Perplexity AI (PPLX) · MongoDB · ECS · Docker · S3
 
 ---
 
-##  Project Structure Overview
+## Project Structure Overview
 
 ```
 backend/
@@ -22,6 +22,39 @@ backend/
 ├── pytest.ini             # Pytest configuration
 ├── .gitignore             # Git exclusions
 ```
+
+---
+
+## AWS S3 Integration
+
+Image uploads (e.g., for memes or generated visuals) are now handled via **AWS S3**.
+
+### Current Behavior
+
+* Generated images are uploaded to the `my-hooked-images` S3 bucket using `boto3`.
+* Each image is stored using a UUID-based key.
+
+### Permissions Requirement
+
+Make sure the IAM role or user (`hooked-admin`) has the following policy:
+
+```json
+{
+  "Effect": "Allow",
+  "Action": [
+    "s3:PutObject",
+    "s3:GetObject"
+  ],
+  "Resource": "arn:aws:s3:::my-hooked-images/*"
+}
+```
+
+> **Troubleshooting**:
+> If you see `AccessDenied` for `s3:PutObject`, ensure:
+>
+> * The IAM user/role is correctly attached to your ECS task or Lambda.
+> * The policy above is included.
+> * The S3 bucket does **not** have a restrictive bucket policy that overrides it.
 
 ---
 
@@ -100,17 +133,21 @@ def extract_valid_json(content: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError("Failed to parse valid JSON from response content") from e
 ````
 
->  **Note**: This approach prevents runtime crashes caused by invalid formatting or hallucinated markdown from LLM responses.
+> **Note**: This prevents runtime crashes due to markdown artifacts from LLM output.
 
 ---
 
-##  Configuration
+## Configuration
 
 Ensure the following are defined in `.env`:
 
 ```env
 MODEL_NAME=sonar-reasoning
 TEMPERATURE=0.7
+S3_BUCKET_NAME=my-hooked-images
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=...
 ```
 
 ---
@@ -126,7 +163,7 @@ FROM python:3.10-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY . . 
 CMD ["python", "main.py"]
 ```
 
@@ -155,166 +192,11 @@ pytest --cov=src tests/
 
 ## Summary
 
-* ✅ Uses Perplexity's `ChatPerplexity` for prompt completion
-* ✅ Handles JSON parsing gracefully with `</think>` marker support
-* ✅ Flexible model selection for `sonar-reasoning`, `sonar-pro`, and `deep-research`
-* ✅ Fully Dockerized with ECS compatibility
+* ✅ Uses Perplexity's `ChatPerplexity` for LLM integration
+* ✅ Graceful fallback and post-processing with `</think>`-based JSON recovery
+* ✅ Flexible support for multiple model types (`sonar-*`, `deep-research`)
+* ✅ Fully Dockerized and ECS-ready deployment
+* ✅ 🆕 Integrated S3 upload support for image assets with IAM policy checks
 
 > 🧠 *Think first. Then query smart.*
-> — HOOKED Backend Philosophy
-
-Got it! Here's your previous query, formatted in Markdown for easy reference and documentation:
-
----
-
-## HookFeedResponse & QuizResponse Schema (for Sonar-Pro)
-
-### 🔹 **HookFeedResponse JSON Schema**
-
-```json
-{
-  "title": "HookFeedResponse",
-  "description": "Detailed schema for a generated educational or informative feed item in 60 words or less",
-  "type": "object",
-  "properties": {
-    "headline": {
-      "type": "string",
-      "description": "The main hook or title to catch the user's attention in 60 words or less"
-    },
-    "hookText": {
-      "type": "string",
-      "description": "A very short, intriguing description expanding on the headline in 60 words or less"
-    },
-    "analogy": {
-      "type": "string",
-      "description": "A simple analogy to help users understand the concept in 60 words or less"
-    },
-    "category": {
-      "type": "string",
-      "description": "The primary category or domain this content belongs to (e.g., Science, History, Art)"
-    },
-    "tags": {
-      "type": "array",
-      "description": "List of descriptive tags to help with discoverability",
-      "items": {
-        "type": "string",
-        "enum": ["science", "memes", "art", "sports", "movies", "music", "technology", "history", "misc"]
-      },
-      "uniqueItems": true,
-      "minItems": 1,
-      "maxItems": 5
-    },
-    "img_desc": {
-      "type": "string",
-      "description": "A detailed prompt to generate a relevant image for this feed item"
-    },
-    "expandedContent": {
-      "type": "object",
-      "description": "Expanded content with structured explanation and real-world connections in 60 words or less",
-      "properties": {
-        "fullExplanation": {
-          "type": "string",
-          "description": "A detailed explanation of the concept in 60 words or less"
-        },
-        "mindBlowingFact": {
-          "type": "string",
-          "description": "A surprising or impressive fact about the topic in 60 words or less"
-        },
-        "realWorldConnection": {
-          "type": "string",
-          "description": "Explanation of how the concept connects to the real world in 60 words or less"
-        }
-      },
-      "required": ["fullExplanation", "mindBlowingFact", "realWorldConnection"]
-    },
-    "citations": {
-      "type": "array",
-      "description": "List of source references used in the content in url",
-      "items": {
-        "type": "string"
-      }
-    },
-    "relatedTopics": {
-      "type": "array",
-      "description": "Related or follow-up topics for further exploration in 60 words or less",
-      "items": {
-        "type": "string"
-      }
-    },
-    "sourceInfo": {
-      "type": "object",
-      "description": "Technical metadata about the topic and generation",
-      "properties": {
-        "sonarTopicId": {
-          "type": "string",
-          "description": "Unique identifier for the source or topic (one word describing source or topic)"
-        },
-        "generatedAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the feed item was generated"
-        }
-      },
-      "required": ["sonarTopicId", "generatedAt"]
-    }
-  },
-  "required": [
-    "headline",
-    "hookText",
-    "analogy",
-    "category",
-    "tags",
-    "img_desc",
-    "expandedContent",
-    "citations",
-    "relatedTopics",
-    "sourceInfo",
-    "metadata"
-  ]
-}
-```
-
----
-
-### 🔹 **QuizResponse JSON Schema**
-
-```json
-{
-  "title": "QuizResponse",
-  "description": "Schema for a quiz generated from a hook, containing multiple MCQs",
-  "type": "object",
-  "properties": {
-    "quiz": {
-      "type": "array",
-      "description": "List of multiple choice questions based on the hook",
-      "items": {
-        "type": "object",
-        "properties": {
-          "question": {
-            "type": "string",
-            "description": "The question to be asked"
-          },
-          "options": {
-            "type": "array",
-            "description": "List of 4 options for the question",
-            "items": {
-              "type": "string"
-            },
-            "minItems": 4,
-            "maxItems": 4
-          },
-          "answer": {
-            "type": "string",
-            "description": "The correct answer to the question"
-          }
-        },
-        "required": ["question", "options", "answer"]
-      },
-      "minItems": 1,
-      "maxItems": 1
-    }
-  },
-  "required": ["quiz"]
-}
-
-```
+> — **HOOKED Backend Philosophy**
