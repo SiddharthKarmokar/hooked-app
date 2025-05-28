@@ -24,7 +24,7 @@ The final score is a **decayed sum of weighted interactions**, favoring content 
 
 #### Formula:
 
-![score](/docs/images/decayed_score.svg)
+![score](./images/decayed_score.svg)
 
 Where:
 
@@ -58,7 +58,7 @@ These weights reflect the **relative value of different user actions**:
 
 The decay factor:
 
-![decay](/docs/images/time_decay.svg)
+![decay](./images/time_decay.svg)
 
 This ensures that content becomes less relevant as it ages, unless sustained by interaction spikes.
 
