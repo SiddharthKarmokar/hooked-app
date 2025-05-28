@@ -2,7 +2,8 @@
 
 This module implements **Multifactor Sequential Reranking with Perception-Aware Diversification (MPAD)** — a hybrid recommendation engine that combines **interest modeling**, **recency/popularity/exploration reranking**, and **MMR-based diversification**.
 
-> **Note:** This implementation makes specific **simplifications and modifications** to the original approach proposed in [MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification](https://arxiv.org/abs/2305.12420). In particular, we **omit** the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.
+!!! note
+    This implementation makes specific **simplifications and modifications** to the original approach proposed in [MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification](https://arxiv.org/abs/2305.12420). In particular, we **omit** the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.
 
 ---
 
@@ -31,11 +32,13 @@ The system has three major stages:
 
 This implementation intentionally deviates from the original MPAD model for performance and simplicity:
 
-* ❌ **Bi-Sequential Determinantal Point Process (DPP):**  
-  Removed in favor of a **simpler MMR-based reranking** for diversity, improving runtime efficiency and easing tuning.
+??? info "Collapsible callout"
+    **Bi-Sequential Determinantal Point Process (DPP):**  
+    Removed in favor of a **simpler MMR-based reranking** for diversity, improving runtime efficiency and easing tuning.
 
-* ❌ **Perception-Aware Kernel for Similarity:**  
-  Replaced with a **Jaccard similarity on hook tags**, allowing interpretable and tag-based diversity computation without complex embedding comparisons.
+??? info "Collapsible callout"
+    **Perception-Aware Kernel for Similarity:**  
+    Replaced with a **Jaccard similarity on hook tags**, allowing interpretable and tag-based diversity computation without complex embedding comparisons.
 
 These changes maintain the core idea of balancing personalization with diversity and exploration, while enabling easier deployment and scaling.
 
@@ -151,7 +154,7 @@ def jaccard(tags1, tags2):
 
 ---
 
-## 🔧 Feed Generation Pipeline
+## Feed Generation Pipeline
 
 ### `update_profile()`
 
