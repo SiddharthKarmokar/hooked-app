@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Query
 from pathlib import Path
-# from typing import List
+from src.config.common_setting import settings
 import json 
+import base64
+from src.database.s3 import s3_client
 from dotenv import load_dotenv
 from bson import ObjectId
 from pymongo import DESCENDING
@@ -26,6 +28,8 @@ from datetime import datetime, timezone
 from src import logger
 import asyncio
 import random
+from io import BytesIO
+import uuid
 load_dotenv()
 
 router = APIRouter()
@@ -51,15 +55,30 @@ async def generate_hook(request: TopicRequest):
                 if "category" not in hook:
                     hook["category"] = topic.capitalize()
 
-                # Generate image if description exists
                 image_prompt = hook.get('img_desc')
                 if image_prompt:
                     try:
                         image_base64 = gemini.get_image(input=image_prompt)
-                        hook["image_base64"] = image_base64
+                        if not image_base64:
+                            raise ValueError("Empty image returned from Gemini")
+
+                        image_bytes = base64.b64decode(image_base64)
+
+                        file_ext = ".png"
+                        unique_name = f"{uuid.uuid4()}{file_ext}"
+
+                        s3_client.upload_fileobj(
+                            BytesIO(image_bytes),
+                            settings.S3_BUCKET_NAME,
+                            unique_name
+                        )
+
+                        image_url = f"https://{settings.S3_BUCKET_NAME}.s3.{settings.AWS_REGION}.amazonaws.com/{unique_name}"
+                        hook["image_url"] = image_url
+
                     except Exception as img_err:
-                        logger.error(f"Image generation failed for topic {topic}: {img_err}")
-                        hook["image_base64"] = None
+                        logger.error(f"Image generation/upload failed for topic {topic}: {img_err}")
+                        hook["image_url"] = None
 
                 hook["metadata"] = {
                     "createdAt": datetime.now(timezone.utc).isoformat() + "Z",
@@ -73,9 +92,8 @@ async def generate_hook(request: TopicRequest):
 
                 feed.append(hook)
 
-                # Insert into MongoDB
-                insert_result = await hooks_collection.insert_one(hook)
-                logger.debug("Inserted hook with ID: %s", insert_result.inserted_id)
+                await hooks_collection.insert_one(hook)
+                logger.debug("Inserted hook with topic: %s", topic)
 
             except KeyError:
                 logger.error("System message not found for topic: %s", topic)
@@ -83,23 +101,21 @@ async def generate_hook(request: TopicRequest):
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=f"Unsupported topic: {topic}"
                 )
-            except PyMongoError as db_err:
+            except PyMongoError:
                 logger.exception("Database insertion failed for topic: %s", topic)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Database insertion error"
                 )
-            except Exception:
-                logger.exception("Unexpected error while generating hook for topic: %s", topic)
+            except Exception as e:
+                logger.exception(f"Unexpected error for topic {topic}: {e}")
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail=f"Failed to generate hook for topic: {topic}"
                 )
 
         logger.info("Successfully generated and stored %d hooks", len(feed))
-        return {
-            "status": "feed successfully generated"
-        }
+        return {"status": "feed successfully generated"}
 
     except Exception:
         logger.exception("Unhandled error in /hook route")
@@ -114,14 +130,13 @@ async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
     try:
         trending_cursor = hooks_collection.find(
             {},
-            sort=[("metadata.popularity", DESCENDING)]
+            sort=[("metadata.popularity", DESCENDING)],
+            projection={"image_base64": 0}
         ).limit(N)
-        print(trending_cursor)
 
         trending_hooks = await trending_cursor.to_list(length=N)
         for hook in trending_hooks:
             hook["_id"] = str(hook["_id"])
-        print(trending_hooks)
         return FeedResponse(feed=trending_hooks)
 
     except Exception as e:

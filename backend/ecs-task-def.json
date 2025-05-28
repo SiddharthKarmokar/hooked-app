@@ -31,6 +31,8 @@
       { "name": "SENDGRID_API_KEY", "value": "SENDGRID_API_KEY_PLACEHOLDER" },
       { "name": "PPLX_API_KEY", "value": "PPLX_API_KEY_PLACEHOLDER" },
       { "name": "GOOGLE_API_KEY", "value": "GOOGLE_API_KEY_PLACEHOLDER" },
+      { "name": "AWS_REGION", "value": "AWS_REGION_PLACEHOLDER" },
+      { "name": "S3_BUCKET_NAME", "value": "S3_BUCKET_NAME_PLACEHOLDER" },
       { "name": "ENABLE_LOGGING", "value": "true" }
     ]
     }

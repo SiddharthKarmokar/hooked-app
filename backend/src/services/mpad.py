@@ -55,7 +55,10 @@ def enrich_with_explicit_tags(interest_vector, explicit_tags, implicit_tags):
 
 async def update_profile():
     try:
-        hooks_cursor = hooks_collection.find()
+        hooks_cursor = hooks_collection.find(
+            {},
+            projection={"image_base64": 0}
+        )
         hooks = {str(h["_id"]): h async for h in hooks_cursor}
 
         logs_cursor = log_collection.find()
@@ -180,7 +183,9 @@ def apply_mmr(scored_hooks, N, lambda_param):
 async def get_candidate_hooks(user_interest_vector, N=100, lambda_param=0.7):
     try:
         K = N * CANDIDATE_POOL_FACTOR
-        all_hooks_cursor = hooks_collection.find({})
+        all_hooks_cursor = hooks_collection.find({},
+            projection={"image_base64": 0}
+        )
         all_hooks = []
         max_views = 1
 
