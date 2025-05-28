@@ -92,6 +92,7 @@ Balances **personal relevance** with:
 
 - ![s](/docs/images/s.svg) : already selected hooks
 - Similarity = **Jaccard Similarity** on tags:
+
 ![jacard_similarity](/docs/images/jacard_similarity.svg)
 
 ### Diversification Tradeoff:
