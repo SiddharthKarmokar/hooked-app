@@ -5,3 +5,10 @@
   --md-primary-fg-color--light: #ffaa4d;
   --md-primary-fg-color--dark: #cc7a29;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
