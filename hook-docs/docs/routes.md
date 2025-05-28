@@ -1,4 +1,4 @@
-# 🧭 API Routes Overview
+# API Routes Overview
 
 This documentation provides a clear, categorized guide to all available routes in the Hooked App API, built with FastAPI.
 
@@ -7,7 +7,7 @@ This documentation provides a clear, categorized guide to all available routes i
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
 ### `POST /api/auth/login`
 
@@ -26,7 +26,7 @@ Register a new user.
 
 ---
 
-## 📧 Email Verification
+## Email Verification
 
 ### `GET /api/auth/verify-email?token=...`
 
@@ -37,7 +37,7 @@ Token is sent via email upon registration.
 
 ---
 
-## 👤 Profile Management
+## Profile Management
 
 ### `GET /api/profile/{profile_id}`
 
@@ -57,7 +57,7 @@ Delete user profile.
 
 ---
 
-## 📰 Feed System
+## Feed System
 
 !!! info "This section powers the Hooked App's intelligent feed system."
 
@@ -102,7 +102,7 @@ Generates a hook + quiz from a user's search query.
 
 ---
 
-## 📊 Interaction Logging
+## Interaction Logging
 
 ### `POST /api/interaction/log`
 
@@ -122,7 +122,7 @@ Used by the trending route to prioritize recent but highly engaged content.
 
 ---
 
-## 🕹️ Gamification & XP
+## Gamification & XP
 
 ### `GET /api/quest/quiz/{profile_id}`
 
@@ -147,7 +147,7 @@ XP influences quest progress and possibly unlocks.
 
 ---
 
-## 📜 Summary
+## Summary
 
 | Category     | Route Prefix       | Tag                  |
 | ------------ | ------------------ | -------------------- |
@@ -160,7 +160,7 @@ XP influences quest progress and possibly unlocks.
 
 ---
 
-## 🛡️ Authentication Flow (JWT)
+## Authentication Flow (JWT)
 
 ```mermaid
 sequenceDiagram

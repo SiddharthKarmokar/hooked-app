@@ -116,11 +116,12 @@ async def get_trending_feed(N:int=NUMBER_OF_TRENDING_HOOKS):
             {},
             sort=[("metadata.popularity", DESCENDING)]
         ).limit(N)
+        print(trending_cursor)
 
         trending_hooks = await trending_cursor.to_list(length=N)
         for hook in trending_hooks:
             hook["_id"] = str(hook["_id"])
-
+        print(trending_hooks)
         return FeedResponse(feed=trending_hooks)
 
     except Exception as e:
