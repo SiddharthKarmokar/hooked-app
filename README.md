@@ -149,6 +149,7 @@ From XP systems to badge logic and learning path generation, we built custom flo
 ## 🔒 Repository
 
 [Github](https://github.com/rahulraocoder/hooked-app/)
+
 [Docs](https://siddharthkarmokar.github.io/hooked-app/)
 
 **Shared With:**
