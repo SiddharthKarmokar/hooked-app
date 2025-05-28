@@ -2,16 +2,16 @@ name: Deploy Docs
 
 on:
   push:
-    branches: ['**'] 
+    branches: ['**']  # Match any branch
     paths:
       - 'hook-docs/**'
-      - 'mkdocs.yml'
 
-  workflow_dispatch:  
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   deploy-site:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,8 +21,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install MkDocs
+      - name: Install MkDocs Material
         run: pip install mkdocs-material
 
-      - name: Deploy docs
+      - name: Deploy documentation to GitHub Pages
+        working-directory: hook-docs
         run: mkdocs gh-deploy --force
