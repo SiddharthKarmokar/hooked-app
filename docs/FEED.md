@@ -1,4 +1,4 @@
-# MPAD Feed Generation Engine
+# Feed Reranking Module
 This module implements **Multifactor Sequential Reranking with Perception-Aware Diversification (MPAD)** — a hybrid recommendation engine that combines **interest modeling**, **recency/popularity/exploration reranking**, and **MMR-based diversification**.
 
 > **Note:** This implementation makes specific **simplifications and modifications** to the original approach proposed in [MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification](https://arxiv.org/abs/2305.12420). In particular, we **omit** the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.
@@ -35,13 +35,13 @@ These changes maintain the core idea of balancing personalization with diversity
 
 #### Formula:
 
-![score formula](/docs/images/mpad_score.svg)
+![score formula](./images/mpad_score.svg)
 
-- ![w_a](/docs/images/w_a.svg) : weight for action (click, like, etc.) from `INTERACTION_WEIGHTS`
-- ![d](/docs/images/d.svg) : interaction duration
-- ![w_d](/docs/images/w_d.svg) : weight for duration (from `INTERACTION_WEIGHTS['duration']`)
-- ![lambda](/docs/images/lambda.svg) : decay rate constant (`DECAY_LAMBDA`)
-- ![text{daysAgo}](/docs/images/daysAgo.svg) : days since hook creation
+- ![w_a](./images/w_a.svg) : weight for action (click, like, etc.) from `INTERACTION_WEIGHTS`
+- ![d](./images/d.svg) : interaction duration
+- ![w_d](./images/w_d.svg) : weight for duration (from `INTERACTION_WEIGHTS['duration']`)
+- ![lambda](./images/lambda.svg) : decay rate constant (`DECAY_LAMBDA`)
+- ![text{daysAgo}](./images/daysAgo.svg) : days since hook creation
 
 ### Decay Rationale:
 
@@ -64,14 +64,14 @@ Older content becomes less relevant over time using an **exponential decay**.
 
 #### Formula:
 
-![reranking_score](/docs/images/reranking_score.svg)
+![reranking_score](./images/reranking_score.svg)
 
 Where:
 - Base score = dot product of interest vector and hook tags
-- Recency = ![e_daysAgo](/docs/images/e_daysAgo.svg)
+- Recency = ![e_daysAgo](./images/e_daysAgo.svg)
 - Popularity = normalized view count
 - Exploration = random factor in `[0.01, 0.1]`
-- Weights ![abgd](/docs/images/alpha_beta_gamma_delta.svg)  from the `WEIGHTS` dictionary
+- Weights ![abgd](./images/alpha_beta_gamma_delta.svg)  from the `WEIGHTS` dictionary
 
 ### Purpose:
 
@@ -88,18 +88,18 @@ Balances **personal relevance** with:
 
 #### MMR Formula:
 
-![mmr_formula](/docs/images/mmr_formula.svg)
+![mmr_formula](./images/mmr_formula.svg)
 
-- ![s](/docs/images/s.svg) : already selected hooks
+- ![s](./images/s.svg) : already selected hooks
 - Similarity = **Jaccard Similarity** on tags:
 
-![jacard_similarity](/docs/images/jacard_similarity.svg)
+![jacard_similarity](./images/jacard_similarity.svg)
 
 ### Diversification Tradeoff:
 
-- ![lambda_1](/docs/images/lambda_1.svg) : pure relevance
-- ![lambda_0](/docs/images/lambda_0.svg) : pure diversity
-- ![lambda_in_01](/docs/images/lambda_in_01.svg) : hybrid
+- ![lambda_1](./images/lambda_1.svg) : pure relevance
+- ![lambda_0](./images/lambda_0.svg) : pure diversity
+- ![lambda_in_01](./images/lambda_in_01.svg) : hybrid
 
 ---
 
