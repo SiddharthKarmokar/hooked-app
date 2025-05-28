@@ -22,14 +22,6 @@ theme:
 
 extra_css:
   - assets/stylesheets/extra.css
-  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css
-
-extra_javascript:
-  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js
-  - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js
-
-markdown_extensions:
-  - pymdownx.arithmatex
 
 nav:
   - Home: index.md
