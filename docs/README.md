@@ -1,4 +1,4 @@
-# MPAD Feed Generation Engine
+# Feed Reranking Module
 This module implements **Multifactor Sequential Reranking with Perception-Aware Diversification (MPAD)** — a hybrid recommendation engine that combines **interest modeling**, **recency/popularity/exploration reranking**, and **MMR-based diversification**.
 
 > **Note:** This implementation makes specific **simplifications and modifications** to the original approach proposed in [MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification](https://arxiv.org/abs/2305.12420). In particular, we **omit** the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.
