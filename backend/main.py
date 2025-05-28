@@ -26,4 +26,4 @@ app.include_router(log_router, prefix="/api/interaction", tags=["user interactio
 app.include_router(quest_router, prefix="/api/quest", tags=['gamification'])
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#hmm
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, proxy_headers=True)#hm

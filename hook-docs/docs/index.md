@@ -145,9 +145,9 @@ Navigate through each key component of the system:
 
 Created by:
 
-- **Aishwarya Jakka** – [aishwaryajakka@gmail.com](mailto:aishwaryajakka@gmail.com)  
-- **Rahul Rao**  
-- **Siddarth Karmokar**
+- **Siddarth Karmokar** - [siddkarmokar@gmail.com](mailto:siddkarmokar@gmail.com) (backend)
+- **Aishwarya Jakka** – [aishwaryajakka@gmail.com](mailto:aishwaryajakka@gmail.com) (ui, ux and management) 
+- **Rahul Rao**  - [rahulyup@gmail.com](mailto:rahulyup@gmail.com) (frontend)
 
 ---
 
