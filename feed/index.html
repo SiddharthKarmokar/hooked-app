@@ -1,0 +1,1262 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../routes/">
+      
+      
+        <link rel="next" href="../trending/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Feed - HookED</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#feed-reranking-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="HookED" class="md-header__button md-logo" aria-label="HookED" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            HookED
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Feed
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../backend/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Backend
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../frontend/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Frontend
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../routes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Routes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Feed
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../trending/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Trending
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="HookED" class="md-nav__button md-logo" aria-label="HookED" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    HookED
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Backend
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Feed
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feed
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-differences-from-the-original-paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Differences from the Original Paper
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-1-interest-vector-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 1: Interest Vector Computation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 1: Interest Vector Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_interest_scorehook-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_interest_score(hook, interaction)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compute_interest_score(hook, interaction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decay-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decay Rationale:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrich_with_explicit_tagsinterest_vector-explicit_tags-implicit_tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      enrich_with_explicit_tags(interest_vector, explicit_tags, implicit_tags)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-tag-in-explicit_tags-interest_vectortag-50-for-tag-in-implicit_tags-interest_vectortag-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      for tag in explicit_tags: interest_vector[tag] += 5.0 for tag in implicit_tags: interest_vector[tag] += 2.5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-2-hook-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 2: Hook Scoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 2: Hook Scoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_reranked_scorehook-base_score-max_views" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_reranked_score(hook, base_score, max_views)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compute_reranked_score(hook, base_score, max_views)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-diversification-via-mmr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 3: Diversification via MMR
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 3: Diversification via MMR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apply_mmrscored_hooks-n-lambda_param" class="md-nav__link">
+    <span class="md-ellipsis">
+      apply_mmr(scored_hooks, N, lambda_param)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="apply_mmr(scored_hooks, N, lambda_param)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmr-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      MMR Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diversification-tradeoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diversification Tradeoff:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feed-generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feed Generation Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feed Generation Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      update_profile()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_candidate_hooksuser_interest_vector-n-lambda_param" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_candidate_hooks(user_interest_vector, N, lambda_param)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_mpad_feeduser_id-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      generate_mpad_feed(user_id, N)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constants
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trending
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-differences-from-the-original-paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Differences from the Original Paper
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-1-interest-vector-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 1: Interest Vector Computation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 1: Interest Vector Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_interest_scorehook-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_interest_score(hook, interaction)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compute_interest_score(hook, interaction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decay-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decay Rationale:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrich_with_explicit_tagsinterest_vector-explicit_tags-implicit_tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      enrich_with_explicit_tags(interest_vector, explicit_tags, implicit_tags)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-tag-in-explicit_tags-interest_vectortag-50-for-tag-in-implicit_tags-interest_vectortag-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      for tag in explicit_tags: interest_vector[tag] += 5.0 for tag in implicit_tags: interest_vector[tag] += 2.5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-2-hook-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 2: Hook Scoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 2: Hook Scoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_reranked_scorehook-base_score-max_views" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_reranked_score(hook, base_score, max_views)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="compute_reranked_score(hook, base_score, max_views)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purpose:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage-3-diversification-via-mmr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage 3: Diversification via MMR
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stage 3: Diversification via MMR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apply_mmrscored_hooks-n-lambda_param" class="md-nav__link">
+    <span class="md-ellipsis">
+      apply_mmr(scored_hooks, N, lambda_param)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="apply_mmr(scored_hooks, N, lambda_param)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmr-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      MMR Formula:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diversification-tradeoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diversification Tradeoff:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feed-generation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feed Generation Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feed Generation Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update_profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      update_profile()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_candidate_hooksuser_interest_vector-n-lambda_param" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_candidate_hooks(user_interest_vector, N, lambda_param)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_mpad_feeduser_id-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      generate_mpad_feed(user_id, N)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constants
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="feed-reranking-module">Feed Reranking Module</h1>
+<p>This module implements <strong>Multifactor Sequential Reranking with Perception-Aware Diversification (MPAD)</strong> — a hybrid recommendation engine that combines <strong>interest modeling</strong>, <strong>recency/popularity/exploration reranking</strong>, and <strong>MMR-based diversification</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This implementation makes specific <strong>simplifications and modifications</strong> to the original approach proposed in <a href="https://arxiv.org/abs/2305.12420">MPAD: Multi-factor Sequential Re-ranking with Perception-Aware Diversification</a>. In particular, we <strong>omit</strong> the bi-sequential DPP and the perception-aware similarity kernel described in the original model, favoring a more lightweight and interpretable pipeline.</p>
+</div>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#key-differences-from-the-original-paper">Key Differences from the Original Paper</a></li>
+<li><a href="#stage-1-interest-vector-computation">Stage 1: Interest Vector Computation</a></li>
+<li><a href="#stage-2-hook-scoring">Stage 2: Hook Scoring</a></li>
+<li><a href="#stage-3-diversification-via-mmr">Stage 3: Diversification via MMR</a></li>
+<li><a href="#-feed-generation-pipeline"> Feed Generation Pipeline</a></li>
+<li><a href="#constants">Constants</a></li>
+</ul>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>The system has three major stages:</p>
+<ol>
+<li><strong>User Interest Vector Construction</strong></li>
+<li><strong>Hook Scoring with Popularity, Recency, and Exploration Adjustments</strong></li>
+<li><strong>Diversified Feed Generation via Maximal Marginal Relevance (MMR)</strong></li>
+</ol>
+<hr />
+<h2 id="key-differences-from-the-original-paper">Key Differences from the Original Paper</h2>
+<p>This implementation intentionally deviates from the original MPAD model for performance and simplicity:</p>
+<details class="info">
+<summary>Collapsible callout</summary>
+<p><strong>Bi-Sequential Determinantal Point Process (DPP):</strong><br />
+Removed in favor of a <strong>simpler MMR-based reranking</strong> for diversity, improving runtime efficiency and easing tuning.</p>
+</details>
+<details class="info">
+<summary>Collapsible callout</summary>
+<p><strong>Perception-Aware Kernel for Similarity:</strong><br />
+Replaced with a <strong>Jaccard similarity on hook tags</strong>, allowing interpretable and tag-based diversity computation without complex embedding comparisons.</p>
+</details>
+<p>These changes maintain the core idea of balancing personalization with diversity and exploration, while enabling easier deployment and scaling.</p>
+<hr />
+<h2 id="stage-1-interest-vector-computation">Stage 1: Interest Vector Computation</h2>
+<h3 id="compute_interest_scorehook-interaction"><code>compute_interest_score(hook, interaction)</code></h3>
+<h4 id="formula">Formula:</h4>
+<p><img alt="score formula" src="../images/mpad_score.svg" /></p>
+<ul>
+<li><img alt="w_a" src="../images/w_a.svg" /> : weight for action (click, like, etc.) from <code>INTERACTION_WEIGHTS</code>  </li>
+<li><img alt="d" src="../images/d.svg" /> : interaction duration  </li>
+<li><img alt="w_d" src="../images/w_d.svg" /> : weight for duration (from <code>INTERACTION_WEIGHTS['duration']</code>)  </li>
+<li><img alt="lambda" src="../images/lambda.svg" /> : decay rate constant (<code>DECAY_LAMBDA</code>)  </li>
+<li><img alt="text{daysAgo}" src="../images/daysAgo.svg" /> : days since hook creation  </li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">score</span> <span class="o">=</span> <span class="n">INTERACTION_WEIGHTS</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">+</span> <span class="n">duration</span> <span class="o">*</span> <span class="n">INTERACTION_WEIGHTS</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">score</span> <span class="o">*=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">DECAY_LAMBDA</span> <span class="o">*</span> <span class="n">days_ago</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="decay-rationale">Decay Rationale:</h3>
+<p>Older content becomes less relevant over time using an <strong>exponential decay</strong>.</p>
+<hr />
+<h3 id="enrich_with_explicit_tagsinterest_vector-explicit_tags-implicit_tags"><code>enrich_with_explicit_tags(interest_vector, explicit_tags, implicit_tags)</code></h3>
+<ul>
+<li>Boosts interest in explicitly and implicitly tagged categories.  </li>
+<li>Boost values:  </li>
+<li>Explicit tag: <code>+5.0</code>  </li>
+<li>Implicit tag: <code>+2.5</code> (half)  </li>
+</ul>
+<h2 id="for-tag-in-explicit_tags-interest_vectortag-50-for-tag-in-implicit_tags-interest_vectortag-25"><div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">explicit_tags</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">interest_vector</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">5.0</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">implicit_tags</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">interest_vector</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">2.5</span>
+</span></code></pre></div></h2>
+<h2 id="stage-2-hook-scoring">Stage 2: Hook Scoring</h2>
+<h3 id="compute_reranked_scorehook-base_score-max_views"><code>compute_reranked_score(hook, base_score, max_views)</code></h3>
+<h4 id="formula_1">Formula:</h4>
+<p><img alt="reranking_score" src="../images/reranking_score.svg" /></p>
+<p>Where:<br />
+- Base score = dot product of interest vector and hook tags<br />
+- Recency = <img alt="e_daysAgo" src="../images/e_daysAgo.svg" /><br />
+- Popularity = normalized view count<br />
+- Exploration = random factor in <code>[0.01, 0.1]</code><br />
+- Weights <img alt="abgd" src="../images/alpha_beta_gamma_delta.svg" /> from the <code>WEIGHTS</code> dictionary  </p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">score</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">WEIGHTS</span><span class="p">[</span><span class="s2">&quot;base_score&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">base_score</span> <span class="o">+</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">WEIGHTS</span><span class="p">[</span><span class="s2">&quot;recency&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">recency_score</span> <span class="o">+</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">WEIGHTS</span><span class="p">[</span><span class="s2">&quot;popularity&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">popularity_score</span> <span class="o">+</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">WEIGHTS</span><span class="p">[</span><span class="s2">&quot;exploration_bonus&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">exploration_bonus</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="purpose">Purpose:</h3>
+<p>Balances <strong>personal relevance</strong> with:<br />
+- <strong>Recency</strong><br />
+- <strong>Popularity</strong><br />
+- <strong>Exploration encouragement</strong></p>
+<hr />
+<h2 id="stage-3-diversification-via-mmr">Stage 3: Diversification via MMR</h2>
+<h3 id="apply_mmrscored_hooks-n-lambda_param"><code>apply_mmr(scored_hooks, N, lambda_param)</code></h3>
+<h4 id="mmr-formula">MMR Formula:</h4>
+<p><img alt="mmr_formula" src="../images/mmr_formula.svg" /></p>
+<ul>
+<li><img alt="s" src="../images/s.svg" /> : already selected hooks  </li>
+<li>Similarity = <strong>Jaccard Similarity</strong> on tags:</li>
+</ul>
+<p><img alt="jacard_similarity" src="../images/jacard_similarity.svg" /></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">mmr_score</span> <span class="o">=</span> <span class="n">lambda_param</span> <span class="o">*</span> <span class="n">rel_score</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">lambda_param</span><span class="p">)</span> <span class="o">*</span> <span class="n">max_sim</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">jaccard</span><span class="p">(</span><span class="n">tags1</span><span class="p">,</span> <span class="n">tags2</span><span class="p">):</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">set1</span><span class="p">,</span> <span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">tags1</span><span class="p">),</span> <span class="nb">set</span><span class="p">(</span><span class="n">tags2</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span> <span class="o">&amp;</span> <span class="n">set2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span> <span class="o">|</span> <span class="n">set2</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="diversification-tradeoff">Diversification Tradeoff:</h3>
+<ul>
+<li><img alt="lambda_1" src="../images/lambda_1.svg" /> : pure relevance  </li>
+<li><img alt="lambda_0" src="../images/lambda_0.svg" /> : pure diversity  </li>
+<li><img alt="lambda_in_01" src="../images/lambda_in_01.svg" /> : hybrid</li>
+</ul>
+<hr />
+<h2 id="feed-generation-pipeline">Feed Generation Pipeline</h2>
+<h3 id="update_profile"><code>update_profile()</code></h3>
+<ul>
+<li>Iterates all users and logs  </li>
+<li>Computes updated interest vectors  </li>
+<li>Stores them in the <code>profile_collection</code></li>
+</ul>
+<hr />
+<h3 id="get_candidate_hooksuser_interest_vector-n-lambda_param"><code>get_candidate_hooks(user_interest_vector, N, lambda_param)</code></h3>
+<ul>
+<li>Collects all hooks  </li>
+<li>Reranks each with <code>compute_reranked_score</code>  </li>
+<li>Sorts and selects top-K candidates (based on <code>CANDIDATE_POOL_FACTOR</code>)  </li>
+<li>Applies MMR to get final top-N diversified results</li>
+</ul>
+<hr />
+<h3 id="generate_mpad_feeduser_id-n"><code>generate_mpad_feed(user_id, N)</code></h3>
+<ul>
+<li>Loads user profile  </li>
+<li>Computes feed using reranking and MMR  </li>
+<li>Returns list of hook documents</li>
+</ul>
+<hr />
+<h2 id="constants">Constants</h2>
+<p>These are defined in <code>src.constants</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">INTERACTION_WEIGHTS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="s2">&quot;clicks&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="s2">&quot;likes&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="s2">&quot;saves&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="s2">&quot;shares&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">DECAY_LAMBDA</span> <span class="o">=</span> <span class="mf">0.1</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="s2">&quot;base_score&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="s2">&quot;recency&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="s2">&quot;popularity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="s2">&quot;exploration_bonus&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="p">}</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">MMR_LAMBDA</span> <span class="o">=</span> <span class="mf">0.7</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="n">N_VALUE</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="n">CANDIDATE_POOL_FACTOR</span> <span class="o">=</span> <span class="mi">3</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.top", "search.highlight", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
