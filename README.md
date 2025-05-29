@@ -152,6 +152,8 @@ From XP systems to badge logic and learning path generation, we built custom flo
 
 [Docs](https://siddharthkarmokar.github.io/hooked-app/)
 
+[API link](http://hooked-cluster-alb-1100697768.us-east-1.elb.amazonaws.com/docs)
+
 **Shared With:**
 
 * [james.liounis@perplexity.ai](mailto:james.liounis@perplexity.ai)
