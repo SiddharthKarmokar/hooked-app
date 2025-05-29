@@ -156,3 +156,4 @@ Created by:
 ## 📜 License
 
 MIT License — Open for educational, non-commercial, and community use.
+
