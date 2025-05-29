@@ -116,13 +116,14 @@ Navigate through each key component of the system:
 
 ## 🎥 Demo
 
-📺 [Watch Demo (3 mins)](https://youtu.be/your-demo-link)
+📺 [Watch Demo (3 mins)](https://youtu.be/FUO4GSRWHn8?si=zATY-f24oGImC66q)
 
 ---
 
 ## 🔒 Repository
 
 [GitHub Repo](https://github.com/rahulraocoder/hooked-app/)
+[API link](http://hooked-cluster-alb-1100697768.us-east-1.elb.amazonaws.com/docs)
 
 **Shared With:**
 - [james.liounis@perplexity.ai](mailto:james.liounis@perplexity.ai)  
@@ -134,7 +135,7 @@ Navigate through each key component of the system:
 
 ## 🏷 Submission Info
 
-**Category:** Health  
+**Category:** Education, Health, Fun and Creative  
 **Bonus:** Deep Research  
 **Team:** Aishwarya Jakka, Rahul Rao, Siddarth Karmokar  
 **Main Tool:** Perplexity Sonar API
